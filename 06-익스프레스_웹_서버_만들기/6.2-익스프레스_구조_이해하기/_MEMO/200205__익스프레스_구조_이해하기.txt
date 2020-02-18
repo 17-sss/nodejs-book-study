@@ -1,0 +1,7 @@
+* 익스프레스 프로젝트 (Express-generator로 생성한 프로젝트) 구조
+    + bin/www 파일: http 모듈에 express 모듈을 연결하고 포트를 지정하는 부분
+        - 위치(상대경로): \Study\Book\02_NodeJS\06\learn-express\bin\www
+    + app.js
+        - 위치(상대경로): \Study\Book\02_NodeJS\06\learn-express\app.js
+    
+** 그 외의 별다른 내용 없으며, app.js 파일 구조를 살펴보기.

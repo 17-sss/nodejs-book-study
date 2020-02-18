@@ -1,0 +1,21 @@
+<!-- [6.5.2.1] 변수 -->
+
+
+<!-- EJS에서 변수는 <%= %> 로 감쌈 -->
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<button class="<%= title %>" type="submit">전송</button>
+<input placeholder="<%= title + '연습' %>" />
+
+
+<!-- 내부에 변수를 사용할 수도 있음. 자바스크립트 코드는 <% %> 안에 적어줌 -->
+<% 
+    var node = 'Node.js'
+    var js = 'Javascript'
+%>
+<p><%= node %>와 <%= js %></p>
+
+
+<!-- HTML 이스케이프하고 싶지 않다면 <%- %> 로 감쌈 -->
+<p><%='<strong>이스케이프</strong>'%></p>
+<p><%-'<strong>이스케이프하지 않음</strong>'%></p>

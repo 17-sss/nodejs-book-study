@@ -1,0 +1,27 @@
+//- [6.5.1.5] include
+//- 헤더나 푸터, 네비게이션처럼 웹 제작 시 공통되는 부분을 따로 관리할 수 있으므로
+    // 매 페이지마다 동일한 HTML을 넣어야하는 번거로움을 없애줌
+
+//- [ME] 원래는 header.pug, footer.pug 등 따로 만들어놔야하지만 귀찮으니.. 여기에 전부함
+//- [1-1] header.pug
+header 
+    a(href='/') Home
+    a(href='/about') About
+
+
+//- [1-2] footer.pug
+footer  
+    div 푸터입니다.
+
+
+//- [2] main.pug
+//- header.pug 불러옴
+include header
+
+main   
+    h1 메인 파일
+    p 다른 파일을 include할 수 있습니다.
+
+//- footer.pug 불러옴
+include footer
+

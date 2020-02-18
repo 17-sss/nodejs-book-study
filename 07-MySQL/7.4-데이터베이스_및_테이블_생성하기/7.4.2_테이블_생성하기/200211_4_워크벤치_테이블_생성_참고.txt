@@ -1,0 +1,8 @@
+* 워크벤치로 테이블 생성시, 옵션 설명 
+    + PK: PRIMARY KEY
+    + NN: NOT NULL 여부
+    + UQ: UNIQUE INDEX
+    + UN: UNSIGNED
+    + ZF: ZERO FILL
+    + AI: AUTO INCREMENT
+    + Default/Expression: 기본 값을 설정해두는 곳.

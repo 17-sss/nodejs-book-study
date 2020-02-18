@@ -1,0 +1,19 @@
+* Express generator 
+    1. 설치: npm i -g express-generator
+    2. 사용법: 
+        1) express [만들 프로젝트 이름] [옵션]
+            + 옵션
+                --view=pug
+                --view=ejs
+        2)  프로젝트 폴더에 들어감과 동시에 npm 모듈들 설치    
+            - cd [프로젝트 폴더경로] && npm install
+    3. 폴더 구조 설명
+        - app.js: 서버 역할
+        - bin\www: 서버를 실행하는 스크립트
+        - public 폴더: 외부(브라우저 등의 클라이언트)에서 접근 가능한 파일들을 모아둔 곳
+        - routes 폴더: 주소별 라우터들을 모아둔 곳
+        - views 폴더: 템플릿 파일을 모아둔 곳
+        - models 폴더: 데이터 관련 부분 작성 공간       (아직 써보지 않음) 
+    
+
+

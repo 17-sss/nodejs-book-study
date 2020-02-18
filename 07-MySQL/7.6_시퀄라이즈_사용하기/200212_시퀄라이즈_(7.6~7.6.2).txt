@@ -1,0 +1,92 @@
+﻿// [7.6] 시퀼라이즈 사용하기
+* Sequelize (시퀄라이즈)
+    + MySQL 작업을 쉽게 할 수 있도록 도와주는 라이브러리.
+    + 시퀄라이즈는 ORM(Object-relational Mapping)으로 분류.
+        - ORM: 자바스크립트 객체와 데이터베이스의 릴레이션을 매핑해주는 도구.
+    + 시퀄라이즈를 쓰는 이유는 자바스크립트 구문을 알아서 SQL로 바꿔주기 때문.
+
+* [Notice] 해당 폴더에 learn-sequelize 폴더(프로젝트) 생성하여 실습(express-generator 사용)
+    + 터미널에서 작업
+        1. express learn-sequelize --view=pug
+        2. learn-sequelize 폴더로 접근
+            1) npm install
+            2) 시퀄라이즈에 필요한 sequelize와 mysql2 패키지 설치
+                > npm install sequelize mysql2
+            3) sequelize 커맨드 사용하기 위해 sequelize-cli 전역 설치
+                > npm install -g sequelize-cli 
+        3. sequelize init     
+            1) init 후 생성된 /learn-sequelize/models/index.js 수정 
+                - sequelize-cli가 자동으로 생성해주는 코드는 그대로 사용시 에러 발생
+                - 필요 없는 부분도 많으므로 수정.
+
+
+
+// [7.6.1] MySQL 연결하기
+* 시퀄라이즈를 통해 express 앱과 MySQL을 연결    
+    + /learn-sequelize/app.js 수정
+        - require('./models')와 require('./models/index.js')는 같음.
+            그러므로, 폴더 내의 index.js 파일은 require 시 이름을 생략할 수 있음.
+        - sync 메서드를 사용하면 서버 실행 시 알아서 MySQL과 연동이 됨.
+
+
+
+// [7.6.2] 모델 정의하기
+* MySQL에서 정의한 테이블을 시퀄라이즈에서 정의.
+    + MySQL의 테이블은 시퀄라이즈의 모델과 대응됨. 
+        시퀄라이즈는 모델과 MySQL의 테이블을 연결해주는 역할을 함.
+    + 시퀄라이즈는 기본적으로 모델 이름은 단수형으로 사용 [★]         
+    + 테이블 이름은 복수형으로 사용 [★]    
+
+    
+    + 모델 정의시..
+        - 시퀄라이즈는 알아서 id를 기본 키로 연결하므로 id 컬럼은 적어줄 필요없음
+        - MySQL 테이블과 컬럼 내용이 일치해야 정확히 대응됨
+
+    + 시퀄라이즈의 자료형, 옵션 일부
+        1) 자료형
+            - VARCHAR   ▶ STRING
+            - INT       ▶ INTEGER
+            - TINYINT   ▶ BOOLEAN
+            - DATETIME  ▶ DATE
+        1-1) 자료형의 옵션
+            - UNSIGNED  ▶ [시퀄라이즈 자료형].UNSIGNED
+            - ZEROFILL  ▶ [시퀄라이즈 자료형].ZEROFILL
+            - UNSIGNED에 ZEROFILL까지 적용하고 싶다면.. 
+                        ▶ [시퀄라이즈 자료형].UNSIGNED.ZEROFILL    
+        2) 옵션 (시퀄라이즈에서 생성자의 속성명)
+            - NOTNULL   ▶ allowNull
+            - unique    ▶ UNIQUE
+            - DEFALUT   ▶ defaultValue
+                □ 기본값(defaultValue)에 now()를 입력해야할 때..
+                            ▶ defaultValue: sequelize.literal('now()'),
+        3) 테이블 옵션 (sequelize.define의 세번째 인자)
+            - timestamps:
+                해당 속성이 true면 시퀄라이즈는 createAt, updateAt 컬럼을 추가함.
+
+    + 모델 정의 목록
+        1. /models/users.js 작성 (users 테이블)
+        2. /models/comment.js 작성 (comments 테이블)
+            - comments 테이블엔 users 테이블과 관계가 있으나 해당 파일하면서 관계까지 정의하지 않음.
+              (시퀄라이즈 자체에서 관계를 따로 정의할 수 있기에..)
+                □ 관계되는 컬럼 users.id -> comments.commenter
+        3. /models/index.js의 db 객체에 작성한 모델들 담기
+        4. /config/config.json 수정
+            - development.password와 development.database를 현재 MySQL 커넥션과 일치하게 수정.
+            1) ./config/config.json 관련 설명
+                - operatorsAliases는 보안에 취약한 연산자를 사용하지 여부를 설정하는 옵션.
+                - config.json의 test와 production 쪽은 각각 테스트 용도와 배포 용도로 사용되는 것
+                - 추후 배포할 때, process.env.NODE_ENV를 production으로 설정
+                    ▷ 배포 환경을 위해 데이터베이스를 설정할 때 config.json의 production 속성을 수정 
+
+    + 추가 메모
+        1) 시퀄라이즈의 모델명과 시퀄라이즈에서 생성되는 데이터베이스의 테이블명 규칙    [★]
+            + 시퀄라이즈의 define 메서드에서 해당하는 테이블이 없을 경우, 해당 모델에 설정된 이름의 복수형으로 MySQL 테이블이 생성됨 
+                - define 메서드의 세번째 인자(테이블옵션 부분)에 tableName 옵션에 내가 생성하고자하는 테이블명을 입력하면, 
+                    설정된 이름(define의 첫번째 인자)의 복수형으로 MySQL 테이블이 생성되지 않고 tableName 옵션의 값으로 테이블이 생성됨
+                    (즉, 시퀄라이즈의 자동변환을 막고 임의의 테이블명으로 생성 가능)
+
+        
+            
+
+                    
+    

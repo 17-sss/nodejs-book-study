@@ -1,0 +1,33 @@
+//- [6.5.1.2] 변수 (pug)
+
+//- 서버에서 렌더링한 변수 사용법 (Pug)
+
+//- [1.] 변수를 텍스트로 사용하고 싶다면 태그 뒤에 = 를 붙인 후 변수 입력 (속성에도 사용 가능)
+//- 1)  h1=   변수명
+h1= title
+//- 2)  button(class= 변수명, type= '타입명')   텍스트
+button(class= title, type='submit') 전송
+//- 3)  input(placeholder= 변수명 + '각종텍스트')
+input(placeholder= title+' 연습')
+
+
+//- [2.] 텍스트 중간에 변수를 넣으려면    #{변수}
+//- 1)  p  텍스트  #{변수명}
+p Welcome to #{title}
+
+
+//- [3.] 빼기(-)를 먼저 입력하면 뒤에 자바스크립트 구문을 작성할 수 있음
+- var node = 'Node.js'
+- var js = 'Javascript'
+p #{node}와 #{js}       
+
+
+//- [4.] 기본적으로 변수의 특수문자를 HTML 엔티티로 이스케이프함.
+//- 1) 이스케이프 사용 =
+p='<strong>이스케이프</strong>'         // <p> &lt;strong&gt;이스케이프&lt;/strong&gt;</p>
+//- 2) 이스케이프 사용하지 않음 != 
+p!='<strong>이스케이프 하지 않음 </strong>'     // <p><strong>이스케이프 하지 않음 </strong></p>
+
+//- [??] 이스케이프?
+    //  특정 문자를 HTML로 변환하는 행위를 Escape(이스케이프)라 함
+

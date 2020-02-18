@@ -1,0 +1,32 @@
+* GitHub 사용하기
+    + Git 가입 후, 웹에서 레포지터리 생성 후..
+        (Git에 올리고자하는 cmd에서 프로젝트 폴더 진입 후 시행)
+        1. Git 관리 대상으로 지정하는 명령어:  
+                ▶ git init
+        2. Git 관리 대상에 추가하는 명령어:    
+                ▶ git add
+            1) 이 명령어에 .(점) 을 붙이면 모든 파일을 추가하겠다는 의미:   
+                ▶ git add .
+        3. 변경사항을 확정하는 명령어
+            1) 확정하기 전에 누가 확정했는지 기록해야 하므로 git config 명령어 사용하여
+                사용자의 이메일 주소, 이름을 등록.
+                ▶ git config --global user.email "이메일주소"
+                ▶ git config --global user.name "사용자명"
+                    [!] 사용자명이 remote 할때 아이디가 됨!
+            2) 변경사항 확정 명령어
+                ▶ git commit -m "Initial commit"
+                    [?] -m 뒤에 문자열은 확정에 관한 설명 메세지.
+        4. Git에 업로드
+            1) 우선 Git에 Github 주소를 등록
+                ▶ git remote add [별명] [주소]
+                    [?] 주소는 'https://아이디:비밀번호@github.com/아이디/저장소명'
+            1-1) git remote add 명령어에서 별명 or 주소를 잘못 입력했을 때는 
+                해당 명령어를 사용해 제거 후, 다시 add 명령어 사용
+                ▶ git remote rm [별명]
+            2) 업로드
+                git push [별명] [브랜치]
+
+
+
+                
+

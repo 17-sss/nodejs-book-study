@@ -1,0 +1,48 @@
+//- [6.5.1] Pug(Jade)
+//- 간단하게 훑어만보고 메모할 것 있음 메모하기로.
+
+
+//- [1] 속성 중 아이디와 클래스의 경우 아래처럼 표현.
+    //- div 태그인 경우 div 문자를 생략 가능
+//-     <div id="login-button"></div>
+#login-button 
+//-     <div class="post-image"></div>
+.post-image
+
+//-     <span id="highlight"></span>
+span#highlight
+//-     <p class="hidden full"></p>
+p.hidden.full
+
+
+//- [2] HTML 텍스트는 속성 뒤에 한 칸 띄고 입력
+//-     <p> Welcome to Express </p>
+p Welcome to Express
+//-     <button type="submit">전송</button>
+button(type="submit") 전송
+
+
+//- [3] 여러 줄 입력하고 싶으면 파이프(|) 사용
+//-     <p>안녕하세요. 여러 줄을 입력합니다.<br />태그도 중간에 넣을 수 있습니다.</p>
+p
+| 안녕하세요
+| 여러 줄을 입력합니다
+br
+| 태그도 중간에 넣을 수 있습니다.
+            
+
+//- [4] style, script 태그로 CSS 또는 자바스크립트 코드를 작성하려면 태그 뒤 점(.)
+//-     <style> 
+//-         h1 {  font-size: 30px; }
+//-     </style>
+style.
+    h1 {
+        font-size: 30px;
+    }
+//-     <script> 
+//-         var message = 'Pug';
+//-         alert(message);
+//-     </script>
+script.
+    var message = 'Pug';
+    alert(message);

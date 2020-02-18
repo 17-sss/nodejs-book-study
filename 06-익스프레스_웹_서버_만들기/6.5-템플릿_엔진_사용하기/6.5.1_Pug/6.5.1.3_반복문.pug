@@ -1,0 +1,11 @@
+//- [6.5.1.3] 반복문 (pug)
+
+//- each로 반복문 돌릴 수 있음. for를 써도 됨
+ul
+    each fruit in ['사과', '배', '오렌지']
+        li= fruit
+
+//- 반복문 사용 시 인덱스 가져올 수 있음
+ul
+    each fruit, index in ['사과', '배', '오렌지']
+        li= (index+1) + '번째 ' +  fruit

@@ -1,0 +1,90 @@
+// [7.6.3] 관계 정의하기
+* 시퀄라이즈 관련
+    + 시퀄라이즈는 JOIN 기능을 알아서 구현해줌.
+        - 단, 시퀄라이즈에게 테이블 간에 어떠한 관계가 있는지 알려주어야..
+* 1:N, 1:1, N:M
+    + 각 관계 예시
+        1. 일대다 관계 (1:N) 
+            1) 사용자 한 명은 댓글을 여러 개 작성할 수 있다. 
+        2. 일대일 관계 (1:1) 
+            1) 사용자와 사용자에 대한 정보를 가진 테이블
+        3. 다대다 관계 (N:M) 
+            1) 게시글 테이블과 해시태그(#) 테이블 관계
+                - 한 게시글에는 해시태그가 여러 개 달릴 수 있으며, 
+                한 해시태그도 여러 게시글에 달릴 수 있음
+
+
+// [7.6.3.1] 1:N
+* 시퀄라이즈에서의 1:N 관계는 hasMany, belongsTo라는 메서드로 표현
+    1. hasMany 
+    - users 테이블의 로우 하나를 불러올 때 연결된 comments 테이블의 로우들도 같이 불러올 수 있음.
+        ex) db.User.hasMany(db.Comment, {foreignKey: 'commenter', sourceKey: 'id'});
+    2. belongsTo    
+    - comments 테이블의 로우를 불러올 때 연결된 users 테이블 로우를 가져옴
+        ex) db.Comment.belongsTo(db.User, {foreignKey: 'commenter', targetKey: 'id'}); 
+
+    + 모델 수정 내역 (해당 파일 참고)
+        1. /models/index.js 수정 
+            1) hasMany, belongsTo 메서드 추가
+
+
+// [7.6.3.2] 1:1
+* 1:1 관계에서는 hasOne, belongsTo 메서드 사용
+    1. hasOne
+        ex) db.User.hasOne(db.Info, {foreignKey: 'user_id', sourceKey: 'id'});
+    2. belongsTo
+        ex) db.Info.belongsTo(db.User, {foreignKey: 'user_id', targetKey: 'id'});        
+
+    + belongsTo와 hasOne이 반대여도 상관없음. 일대일이니까.
+
+
+// [7.6.3.3] N:M
+* N:M 관계는 belongsToMany 메서드 사용
+    1. belongsToMany
+        db.Post.belongsToMany(db.Hashtag, {through: 'PostHashtag'});
+        db.Hashtag.belongsToMany(db.Post, {through: 'PostHashtag'});
+
+    + 다대다의 대표적인 예로는 인스타그램의 게시물(Post)와 게시물에 넣는 해쉬태그(Hashtag)
+    + 다대다 관계 특성상 새로운 모델이 자동으로 생성됨. (PostHashtag)
+    
+    + 다대다 관계에서는 데이터를 조회할 떄 여러 단계를 거쳐야함.
+        예로는 '노드' 해쉬태그를 Hashtag 모델에서 조회하고, 가져온 태그의 아이디(1)를 
+        바탕으로 PostHashtag 모델에서 hashtagId가 1인 postId들을 찾아 Post 모델에서 정보를 가져옴.
+        
+        - 시퀄라이즈는 위 과정을 편하게 할 수 있음.
+        1) async/await 형식 (get + '모델명 복수형' 메서드)
+            async(req, res, next) => {
+                const tag = await Hashtag.find({where: { title: '노드'} });
+                const posts = await tag.getPosts();
+                /* 
+                    해시태그(정보)를 찾으면 그 해시태그에서 바로 getPost 메서드를 사용할 수 있음.
+                    (await tag.getPosts(); 참고.)
+                       ▷ get + 모델 이름(여기선 Post)의 복수형임 >> getPosts();
+                */
+            };  
+        1-1) 프로미스 형태 (get + '모델명 복수형' 메서드)
+            HashTag.find({ where: {title: '노드'} })
+                .then(tag => tag.getPosts())
+                .then(posts => console.log(posts));
+        2) async/await 형식 (add + '모델명 복수형' 메서드)
+            async(req, res, next) => {
+                const tag = await Hashtag.find({where: {title: '노드'}});
+                await tag.addPosts(3);
+
+                /* 
+                    PostHashtag 모델에 postId가 3이고
+                    hashtagId가 1인 로우가 생성됨.
+                */
+            };
+        
+            
+
+
+
+
+
+ 
+
+
+
+            

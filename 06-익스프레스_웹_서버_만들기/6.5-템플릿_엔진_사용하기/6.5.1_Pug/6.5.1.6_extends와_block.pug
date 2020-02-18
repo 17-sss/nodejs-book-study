@@ -1,0 +1,35 @@
+//- [6.5.1.6] extends와 block
+    공통되는 레이아웃 부분 따로 관리. include와 함께 사용되곤 함
+    
+    + block 관련
+        - block 선언하는 법: block [블록명]
+        - block이 되는 파일에서는 extends 키워드로 레이아웃 파일을 지정하고 block 부분을 넣어줌
+            block 선언보다 한 단계 더 들여쓰기 되어 있어야함.
+
+
+//- [1] layout.png
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        block style
+    body
+        header 헤더입니다.
+        //- body.pug에서 block content 정의함
+        block content
+        footer 푸터입니다.
+    //- body.pug에서 block javascript 정의함
+    block javascript
+
+
+
+
+//- [2] body.png    (위의 block들 정의함)
+extends layout
+block content
+    main
+        p 내용입니다.
+
+block javascript
+    script(src="/javascripts/main.js")

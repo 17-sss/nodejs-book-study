@@ -1,0 +1,65 @@
+* 테이블 생성하기
+    + 테이블이란 데이터가 들어갈 수 있는 틀을 의미
+    + 테이블 생성: 
+        1) CREATE TABLE [데이터베이스명.테이블명]
+        2) use [데이터베이스명];    
+            CREATE TABLE [테이블명]
+        
+        @ (사용자 정보를 저장하는 테이블 users) : 콘솔 ------- START     
+        
+            mysql> CREATE TABLE users(
+                -> id INT NOT NULL AUTO_INCREMENT,
+                -> name VARCHAR(20) NOT NULL,
+                -> age INT UNSIGNED NOT NULL,
+                -> married TINYINT NOT NULL,
+                -> comment TEXT NULL,
+                -> created_at DATETIME NOT NULL DEFAULT now(),
+                -> PRIMARY KEY(id),
+                -> UNIQUE INDEX name_UNIQUE (name ASC)
+                -> )
+                -> COMMENT ='사용자 정보'
+                -> DEFAULT CHARSET=utf8
+                -> ENGINE=InnoDB;
+            Query OK, 0 rows affected, 1 warning (0.13 sec)
+        @== 콘솔 ------- END
+
+      
+        @ (사용자 댓글을 저장하는 테이블 comments) : 콘솔 ------- START
+
+            mysql> create table comments (
+                -> id int not null auto_increment,
+                -> commenter int not null,
+                -> comment varchar(100) not null,
+                -> created_at datetime not null default now(),
+                -> primary key(id),
+                -> index commenter_idx (commenter ASC),
+                -> constraint commenter
+                -> foreign key (commenter)
+                -> references nodejs.users (id)
+                -> on delete cascade
+                -> on update cascade)
+                -> comment = '댓글'
+                -> default charset=utf8
+                -> engine=InnoDB;
+            Query OK, 0 rows affected, 1 warning (0.06 sec)
+        @== 콘솔 ------- END
+
+            ▷ comments 테이블에서 commenter 컬럼은 외래키.
+            
+                    
+    + 테이블 생성 직후, warning 발생 시에 오류 목록보기:    
+        SHOW WARNINGS\G
+
+
+* 만들어진 테이블 확인하는 명령어:  DESC [테이블명];
+* 테이블 제거:  DROP TABLE [테이블명];
+* AUTO_INCREMENT 초기화 (시작할 값보다 높은 데이터가 있음 안됨):
+    ALTER TABLE [테이블명] AUTO_INCREMENT=[시작할 값]
+
+* 외래키
+    + 다른 테이블의 기본 키를 저장하는 컬럼을 외래 키(foreign key)라고 부름
+    + 외래키 생성:
+        CONSTRAINT [제약조건명] FOREIGN KEY [컬럼명] REFERENCES [참고하는 컬럼명]
+
+* CASCADE 옵션
+    + 사용자 정보가 수정되거나 삭제될 시, 그것과 연결된 정보도 같이 수정하거나 삭제함.

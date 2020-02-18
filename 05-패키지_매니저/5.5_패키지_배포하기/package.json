@@ -1,0 +1,14 @@
+{
+  "name": "npmtest-xzx",
+  "version": "0.0.1",
+  "description": "배포테스트",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ho-young Son",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

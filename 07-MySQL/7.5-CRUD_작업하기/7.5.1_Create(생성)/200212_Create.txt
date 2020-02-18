@@ -1,0 +1,23 @@
+* Create(생성): 데이터를 생성해서 데이터베이스에 넣는 작업.
+    + 데이터를 넣는 명령어
+        INSERT INTO [테이블명] ([컬럼1], [컬럼2], ...) VALUES ([값1], [값2], ...)
+
+    @ (users 테이블에 사용자 정보 추가) : 콘솔 ------- START     
+        mysql> INSERT INTO users (name,age,married, comment) VALUES ('zero', 24, 0, '자기소개1');
+        Query OK, 1 row affected (0.02 sec)
+
+        mysql> INSERT INTO users (name,age,married, comment) VALUES ('nero',32, 0, '자기소개2');
+        Query OK, 1 row affected (0.01 sec)
+    @== 콘솔 ------- END
+
+
+    @ (comments 테이블에 댓글 추가) : 콘솔 ------- START     
+        mysql> INSERT INTO comments (commenter, comment) VALUES (1, '안녕하세요. SON호영입니다');
+        Query OK, 1 row affected (0.00 sec)  
+    @== 콘솔 ------- END
+    
+
+
+    
+
+

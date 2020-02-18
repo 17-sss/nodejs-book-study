@@ -1,0 +1,10 @@
+// [7.6.5] 쿼리 수행하기
+* 모델에서 데이터를 받아서 페이지를 렌더링하는 방법과 JSON 형식으로 데이터를 가져오는 방법 (실습)
+    + 작성 파일 설명 및 위치        
+        1. 간단하게 사용자 정보를 등록하고, 사용자가 등록한 댓글을 가져오는 서버
+            1)  /learn-sequelize/view/sequelize.pug
+            2)  /learn-sequelize/public/sequelize.js
+            3)  /learn-sequelize/app.js
+            4)  /learn-sequelize/routes/index.js
+            5)  /learn-sequelize/routes/users.js
+            6)  /learn-sequelize/routes/comments.js

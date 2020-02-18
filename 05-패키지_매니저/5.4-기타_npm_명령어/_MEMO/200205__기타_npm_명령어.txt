@@ -1,0 +1,24 @@
+// [5.4] 기타 npm 명령어
+
++ npm outdated: 업데이트할 수 있는 패키지가 있는지 확인
++ npm uninstall [패키지명] / npm rm [패키지명]: 해당 패키지 제거
++ npm search [검색어]: npm 패키지 검색
+    - 그냥 https://npmjs.com 에서 검색하는게 편리
++ npm info [패키지명]: 패키지의 세부 정보를 파악
+
++ npm adduser: npm 로그인을 위한 명령어     
+    - 가입은 npm 공식 사이트에서..
+    - 패키지 배포 안할거면 굳이 안해도.
++ npm whoami: 지금 로그인한 사용자가 누구인지 알려줌.
++ npm logout: adduser로 로그인한 계정 로그아웃
+
++ npm version [버전]: package.json의 버전을 올려줌, 원하는 버전의 숫자를 넣으면 됨
+    - major, minor, patch 문자열을 넣어 해당 부분 숫자를 1 올릴 수도 있음.
+        ex) npm version [major || minor || patch]
+        ex) (patch 1 올림): npm version patch
+
++ npm deprecate [패키지명][버전][메세지]: 해당 패키지를 설치할 때 경고 메세지를 띄우게 함
+    [!] 자신의 패키지에만 적용 가능
++ npm publish: 자신이 만든 패키지 배포
++ npm unpublish: 배포한 패키지를 제거
+    [!] 24시간 이내에 배포한 패키지만 제거 가능

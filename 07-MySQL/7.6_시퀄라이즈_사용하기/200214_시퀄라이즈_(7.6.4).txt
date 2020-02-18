@@ -1,0 +1,137 @@
+// [7.6.4] 쿼리 알아보기
+* 시퀄라이즈 쿼리
+    + SQL문을 자바스크립트로 생성하는 것이라 시퀄라이즈만의 방식이 있음.
+    + 쿼리는 프로미스를 반환. then을 붙여 결괏값을 받을 수 있음. (async/await 문법도 같이 사용 가능)
+    
+* 시퀄라이즈 쿼리 예시 
+    + 시퀄라이즈 쿼리 쓸 때 주의할 점
+        데이터를 넣을 때 MySQL의 자료형이 아닌 시퀄라이즈 모델에 정의한 자료형대로 넣어야함.
+        (자료형이나 옵션에 부합하지 않는 데이터를 넣었을 시, 시퀄라이즈에서 에러 발생)
+
+    1. INSERT   (create)
+        1) SQL
+            INSERT INTO users (name, age, married, comment) VALUES ('zero', 24, 0, '자기소개1');
+        2) 시퀄라이즈  
+            const { User } = require('../models')
+            User.create({
+                name: 'zero',
+                age: 24,
+                married: false,
+                comment: '자기소개1',
+            });
+
+    2. SELECT   (find, findAll)
+        + 데이터 1개 조회   (시퀄라이즈 find 메서드)
+            1) SQL 
+                SELECT * FROM users LIMIT 1;
+            2) 시퀄라이즈
+                const { User } = require('../models')
+                User.find({});  // ME, 중괄호 하나이기에 'LIMIT 1' 옵션에 부합할 듯.
+
+        + 데이터 전부 조회  (시퀄라이즈 findAll 메서드)
+            1) SQL
+                SELECT name, married FROM users;
+            2) 시퀄라이즈  
+                const { User } = require('../models')
+                User.findAll({
+                    attributes: ['name', 'married'],
+                })
+
+        + 원하는 컬럼만 조회    (시퀄라이즈 findAll 메서드 : attributes 옵션 활용)
+            1_ AND
+                1) SQL
+                    SELECT name, age FROM users WHERE married=1 AND age>30;
+                2) 시퀄라이즈
+                    // 시퀄라이즈 객체 내부의 Op 객체불러와 사용
+                    const  { User, Sequelize: { Op } } = require('../models'); 
+                    User.findAll({
+                        attributes: ['name', 'age'],
+                        where: {
+                            married: 1,
+                            age: { [Op.gt]: 30 },
+                        },
+                    });
+            2_ OR
+                1) SQL
+                    SELECT id, name FROM users WHERE married=0 OR age > 30;
+                2) 시퀄라이즈
+                    // 시퀄라이즈 객체 내부의 Op 객체불러와 사용
+                    const  { User, Sequelize: { Op } } = require('../models'); 
+                    User.findAll({
+                        attributes: ['id', 'age'],
+                        where: {
+                            [Op.or]: 
+                                    [
+                                        { married: 0 }, 
+                                        { age: 
+                                            { [Op.gt]: 30 } 
+                                        }
+                                    ],
+                        },
+                    });
+            3_ 메모: 시퀄라이즈 객체 내부의 Op 객체의 연산자 
+                - Op.gt:    초과
+                - Op.gte:   이상
+                - Op.lt:    미만
+                - Op.lte:   이하
+                - Op.ne:    같지 않음
+                - Op.or:    또는
+                - Op.in:    배열 요소 중 하나
+                - Op.notIn: 배열 요소와 모두 다름
+
+        + 정렬 
+            1_ ORDER BY
+                1) SQL
+                    SELECT id, name FROM users ORDER BY age DESC;
+                2) 시퀄라이즈  
+                    const { User } = require('../models');
+                    User.findAll({
+                        attributes: ['id', 'name'],
+                        order: [
+                            ['age', 'DESC']
+                        ],
+                    });
+            1-1_ ORDER BY + LIMIT (조회할 로우 개수 설정)
+                1) SQL
+                    SELECT id, name FROM users ORDER BY age DESC LIMIT 1;
+                2) 시퀄라이즈  
+                    const { User } = require('../models');
+                    User.findAll({
+                        attributes: ['id', 'name'],
+                        order: ['age', 'DESC'],
+                        limit: 1,
+                    });    
+            1-2_ ORDER BY + LIMIT + OFFSET
+                1) SQL
+                    SELECT id, name FROM users ORDER BY age DESC LIMIT 1 OFFSET 1;
+                2) 시퀄라이즈  
+                    const { User } = require('../models');
+                    User.findAll({
+                        attributes: ['id', 'name'],
+                        order: ['age', 'DESC'],
+                        limit: 1,
+                        offset: 1,
+                    });                
+            2_ 주의사항
+                - order 속성의 값은 배열 안에 배열을 생성할 수도 있음.
+                    정렬은 꼭 컬럼 하나로 하는게 아닌 두 개 이상으로도 할 수 있기 때문.
+        
+        3. UPDATE   (update)
+            1) SQL
+                UPDATE users SET comment = '바꿀 내용' WHERE id = 2;
+            2) 시퀄라이즈
+                const { User } = require('../models');
+                User.update({
+                    comment: '바꿀 내용',
+                }, {
+                    where: {id: 2},
+                });
+
+        4. DELETE   (destroy)
+            1) SQL 
+                DELETE FROM users WHERE id = 2;
+            2) 시퀄라이즈
+                const { User } = require('../models');
+                User.destroy({
+                    where: { id: 2 },
+                });
