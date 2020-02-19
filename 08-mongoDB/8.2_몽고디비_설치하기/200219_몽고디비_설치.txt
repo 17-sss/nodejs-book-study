@@ -1,0 +1,26 @@
+* 몽고디비 설치하기  (Windows)
+    + https://www.mongodb.com/download-center/community
+    
+    + 설치 완료 후 작업 
+        1. 서버 실행
+            1) 윈도의 경우 C: 에 data폴더를 만들고 다시 그 안에 db폴더를 만들면 됨
+            2) cmd로 몽고디비가 설치된 경로로 이동
+                (C:\Program Files\MongoDB\Server\4.2\bin)
+            3) cmd에 입력:    mongod
+        2. 서버 실행 후 몽고디비 프롬프트에 접속
+            1) cmd를 하나 더 열어서 입력(설치된 경로로 이동 후):   mongo
+            2) 관리자 계정 사용:    use admin
+            3) 계정 추가:   db.createUser({ user:'이름', pwd:'비밀번호', roles: ['root'})
+                ▷ 현재 계정 생성 시 roles로는 모든 권한이 있는 root를 부여하였음.
+                    나중에 실무에서는 상황에 맞는 역할 부여하기.
+        3-1. 1. 에서 입력했던 (mongod) 콘솔을 종료 후
+            1) cmd에 입력:      mongod --auth
+                ▷ --auth는 로그인이 필요하다는 뜻.
+        3-2. 2. 에서 입력했던 (mongo) 콘솔을 종료 후
+            1) cmd에 입력(접속):    mongo admin -u 이름 -p 비밀번호
+
+
+// ---------
+
+* MacOS, 리눅스 설치법은 굳이..
+    ▷ 나중에 설치해야 할 상황이 온다면 책 참고
