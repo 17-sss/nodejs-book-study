@@ -1,0 +1,4 @@
+*  (몽고디비 컴퍼스 설치 후) 커넥션 생성하기
+    1. MongoDB Compass Community 실행
+        1) Authentication을 Username/Password로 바꾸고, 몽고디비 계정 이름, 비밀번호 입력
+        2) Connect 버튼 눌러 접속

@@ -1,0 +1,34 @@
+* Create(생성) - MongoDB
+    + 몽고디비는 컬렉션에 컬럼을 정의하지 않아도 되므로 컬렉션에는 아무 데이터나 넣을 수 있음.
+        이러한 자유로움이 장점. 단, 무엇이 들어올지 모른다는 단점도 있음.
+    + 몽고디비의 자료형은 MySQL과 다름.
+    + 몽고디비의 자료형
+        1. 사용
+            1) Date나 정규표현식 같은 자바스크립트 객체를 자료형으로 사용할 수 있음
+            2) Binary Data, ObjectId, Int, Long, Decimal, Timestamp, Javascript 등 추가적인 자료형이 있음.
+                - ObjectId와 Binary Data, Timestamp 외에는 잘 사용되지 않음.
+                    ▷ ObjectId는 MySQL에서 기본 키로 쓰이는 값과 비슷한 역할.
+        2. 사용하지 않음
+            - Undefined와 Symbol은 몽고디비에서 자료형으로 사용하지 않음.
+    + 명령어
+        1. 다큐먼트 생성
+            ▷ db.컬렉션명.save(다큐먼트)
+            1) 다큐먼트 생성 예시 (cmd)
+                1-1) 유저 생성
+                    > db.users.save({name: 'Ho', age: 28, married: false, comment: '안녕', createdAt: new Date() });
+                    // △ 여기서 new Date()는 현재 시간을 입력하라는 뜻.
+                1-2) 댓글 생성
+                    // 사용자의 id를 찾기 위해 find 메서드 사용
+                    > db.users.find({ name:'Ho' }, { _id: 1 })
+                    { "_id" : ObjectId("5e4ce2c2b0740fc50deab6ef") }    // 결과값
+
+                    // 위 결과값으로 댓글 생성
+                    > db.comments.save({ commenter: ObjectId('5e4ce2c2b0740fc50deab6ef'), comment: 'ㅎㅇ', createdAt: new Date() });
+
+                + 명령이 성공적으로 수행되었을시, WriteResult({ "nInserted": 1 })이라는 응답이 옴
+                + 몽고디비에선 MySQL의 id 대신 ObjectId가 있음. 필드 이름은 _id 로 표현
+    
+              
+
+
+    
