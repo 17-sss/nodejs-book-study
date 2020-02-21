@@ -1,0 +1,4 @@
+* Delete(수정) - MongoDB
+    + 데이터 삭제
+        ▷ db.[컬렉션명].remove({삭제할 다큐먼트})
+            ex) db.users.remove({name: 'Ho'});

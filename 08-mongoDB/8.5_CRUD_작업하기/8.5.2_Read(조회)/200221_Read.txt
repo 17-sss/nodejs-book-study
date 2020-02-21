@@ -1,0 +1,38 @@
+* Read(조회) - MongoDB
+    + 다큐먼트 조회
+        1. 전부 조회: 
+            ▷ db.[컬렉션명].find({})
+                ex) db.users.find({})
+                    
+        2. 특정 필드만 조회:    
+            ▷ db.[컬렉션명].find({}, { 표시할 필드명: True(1) or False(0), ... });
+                ex) db.users.find({}, {_id: 0, name: 1, married: 1}) 
+                
+        3. 조건 적용:  
+            ▷ db.[컬렉션명].find( { 조건 }, { 표시할 필드명: True(1) or False(0), ... });
+            1) 예시
+                ex) age가 30초과, married가 true인 다큐먼트 이름과 나이 조회
+                    db.users.find({age: {$gt: 30}, married: true}, {_id: 0, name: 1, age: 1});
+                ex) age가 30초과이거나 married가 false인 다큐먼트를 조회
+                    db.users.find({ $or: [ {age: { $gt: 30 }}, {married: false} ] }, {_id: 0, name: 1, age: true});
+            2) 조건절의 연산자 종류 ($gt 같은..)
+                - $gt:  초과
+                - $gte: 이상
+                - $lt:  미만
+                - $lte: 이하
+                - $ne:  같지 않음
+                - $or:  또는
+                - $in:  베열 요소 중 하나
+
+        4. 정렬 ( -1: 내림차, 1: 오름차 ) : sort 메서드 사용
+            ▷ db.[컬렉션명].find({}, { 표시할 필드명: True(1) or False(0), ... }).sort({정렬할 필드명: -1 or 1});
+                ex) db.users.find({}, {_id: 0, name: 1, age: 1}).sort({age: -1});
+        
+        5. 조회할 다큐먼트 개수 설정 : limit 메서드 사용
+            ▷ db.[컬렉션명].find({}, { 표시할 필드명: True(1) or False(0), ... }).limit(조회할 갯수);
+                ex) db.users.find({}, {_id: 0, name: 1, age: 1}).limit(1); 
+                ex) db.users.find({}, {_id: 0, name: 1, age: 1}).sort({age: -1}).limit(1); 
+
+        6. 다큐먼트 개수 설정하며, 몇 개 건너뛸지 설정 : skip 메서드 사용
+            ▷ db.[컬렉션명].find({}, { 표시할 필드명: True(1) or False(0), ... }).limit(조회할 갯수).skip(건너뛸 갯수);
+                ex) db.users.find({}, { _id: 0, name: 1, age: 1 }).sort({ age: -1 }).limit(1).skip(1)
