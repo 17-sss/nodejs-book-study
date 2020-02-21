@@ -1,0 +1,13 @@
+* 몽구스 사용하기
+    - 몽구스는 시퀄라이즈와 달리 ODM (Object Document Mapping) 이라고 불림
+        몽고디비는 릴레이션이 아니라 다큐먼트를 사용하므로 ORM이 아니라 ODM임.
+    - 몽구스는 몽고디비에 테이블이 없어 자유롭게 데이터를 넣을 수 있지만, 
+        불편함을 초래하는 경우도 있기에 몽구스엔 스키마가 있음
+    - 몽구스는 몽고디비에 데이터를 넣기 전에 노드 서버단에서 데이터를 한번 필터링 해줌
+    - MySQL의 JOIN 기능을 populate 라는 메서드로 보완해줌.
+    - ES6 프로미스 문법과 강력하고 가독성이 높은 쿼리 빌더를 지원하는 것도 장점
+
+    + Express-generator로 몽구스 프로젝트 생성 (콘솔)
+        1) express learn-mongoose --view=pug
+        2) 프로젝트 경로가서 npm install
+        3) 프로젝트 경로가서 npm i mongoose
