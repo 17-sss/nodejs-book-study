@@ -1,0 +1,9 @@
+* 몽고디비 연결하기
+    + 몽고디비는 주소를 사용해 연결
+        ▷ 주소형식: 주소 형식은 mongodb://[username:password@]host[:port][/[database][?options]]
+            - [] 부분은 있어도 되고 없어도 됨을 의미
+    
+    + 루트 디렉터리 (learn-mongoose)에 schemas 폴더 생성 후 실습
+        1. 실습 파일 설명 및 위치
+            1)  /learn-mongoose/schemas/index.js    (전부)
+            2)  /learn-mongoose/app.js
