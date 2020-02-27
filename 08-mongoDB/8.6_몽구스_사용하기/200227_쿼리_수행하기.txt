@@ -1,0 +1,7 @@
+* 쿼리 수행하기
+    + 실습 파일 설명 및 위치
+        1.  /learn-mongoose/views/mongoose.pug    (전부)
+        2.  /learn-mongoose/public/mongoose.js    (전부)
+        3.  /learn-mongoose/routes/index.js    (수정)
+        4.  /learn-mongoose/routes/users.js    (수정)
+        5.  /learn-mongoose/routes/comments.js    (전부)

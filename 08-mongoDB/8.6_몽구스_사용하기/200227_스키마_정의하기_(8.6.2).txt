@@ -1,0 +1,13 @@
+* 스키마 정의하기 
+    + 몽구스 스키마 특징
+        1. String, Number, Date, Buffer, Boolean, Mixed, ObjectId, Array를 값으로 가질 수 있음.
+        2. 필드 선언시, required나 default 등의 옵션이 필요하지 않다면 간단히 자료형만 명시.
+    + 컬렉션 이름 규칙
+        몽구스는 model 메서드의 첫 번째 인자로 컬렉션 이름을 만듬.
+        첫번째 인자가 User이면 첫 글자를 소문자로만든뒤 복수형으로 바꿔서 users 컬렉션을 생성함.
+        - 이러한 강제 개명이 싫다면 세 번째 인자로 컬렉션 이름을 변경할 수 있음.
+            ex) mongoose.model('User', userSchema, 'user_table');
+
+    + 실습 파일 설명 및 위치
+        1.  /learn-mongoose/schemas/user.js    (전부)
+        2.  /learn-mongoose/schemas/comment.js    (전부)
