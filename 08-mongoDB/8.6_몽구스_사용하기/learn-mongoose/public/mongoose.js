@@ -172,3 +172,15 @@ document.getElementById('comment-form').addEventListener('submit', function (e) 
     e.target.userid.value = '';
     e.target.comment.value = '';
 });
+
+
+// [ME, 이벤트 리스너 연습용]
+function click1() {
+    alert('나다 이 10새기야');
+} 
+document.getElementById('clickMe').addEventListener('click', click1); // click1에 ()붙이면 페이지 실행시에도 실행되어버림.
+document.getElementById('clickMe').addEventListener('click', () => {
+    document.getElementById('clickMe').removeEventListener('click', click1);
+    alert('오 5태식2');
+});
+

@@ -1,7 +1,12 @@
 * 쿼리 수행하기
     + 실습 파일 설명 및 위치
-        1.  /learn-mongoose/views/mongoose.pug    (전부)
-        2.  /learn-mongoose/public/mongoose.js    (전부)
-        3.  /learn-mongoose/routes/index.js    (수정)
-        4.  /learn-mongoose/routes/users.js    (수정)
-        5.  /learn-mongoose/routes/comments.js    (전부)
+        1.  /learn-mongoose/views/mongoose.pug      (전부)
+        2.  /learn-mongoose/public/mongoose.js      (전부)
+        3.  /learn-mongoose/routes/index.js         (수정)
+        4.  /learn-mongoose/routes/users.js         (수정)
+        5.  /learn-mongoose/routes/comments.js      (전부)
+        6.  /learn-mongoose/app.js                  (수정)
+    
+    + 메모
+        1. async/await, Promise에 대한 개념이 부족함.
+            1) 참고: https://www.zerocho.com/category/ECMAScript/post/58d142d8e6cda10018195f5a
