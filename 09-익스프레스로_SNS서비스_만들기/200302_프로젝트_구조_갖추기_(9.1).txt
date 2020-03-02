@@ -1,0 +1,61 @@
+* 프로젝트 구조 갖추기
+    + 실습 파일 설명 및 위치
+        1. nodebird 폴더 생성 및 npm init
+            1) package.json 생성
+        2. 데이터베이스 MySQL 적용 & 프로젝트 구조 생성
+            [사용자와 게시물 간, 게시물과 해시태그 간의 관계가 중요하므로 관계형 데이터베이스인 MySQL 선택.]
+            1) npm 패키지 sequelize & mysql2 설치 :: (콘솔)
+                > npm i -g sequelize-cli
+                > npm i sequelize mysql2
+                    (해당 명령어 호출시 node_modules 폴더, package-lock.json 파일 생생)
+                > sequelize init
+                    (해당 명령어 호출시 config, migrations, models, seeders 폴더가 생성됨)
+            2) 직접 폴더 생성
+                - /nodebird/views
+                    (템플릿 파일)
+                - /nodebird/routes
+                    (라우터)
+                - /nodebird/public 
+                    (정적 파일)
+                - /nodebird/passport
+                    (npm : passport 패키지) 
+            3) 기타 npm 패키지 설치 :: (콘솔)
+                > npm i express cookie-parser express-session morgan connect-flash pug
+                > npm i -g nodemon 
+                > npm i -D nodemon      // [?] -D는 개발시에만 사용하는 약어인가?
+                    {
+                        ** 서버 코드에 수정 사항이 생길 때마다 매번 서버를 재시작하기엔 번거로우니 
+                            nodemon 패키지 전역으로 설치
+                        + 서버 코드를 수정하면 nodemon이 서버를 자동으로 재시작 해줌
+                        + nodemon이 실행되는 콘솔에 rs를 입력해서 수동으로 재시작도 가능
+                        [!] nodemon은 개발용으로만 사용할 것!
+                    }
+            4) /nodebird/app.js  (작성)
+                + 이 프로젝트는 콘솔에서 실행 가능한 명령어로 만들 필요가 없으므로 bin/www는 필요하지 않음
+                + cookieParser와 express-session의 nodebirdsecret 같은 비밀키는 직접 하드코딩하지 않음.
+                    - 키를 하드코딩하면 소스 코드가 유출되었을 때 키도 같이 유출되므로 별도로 관리해야 함.
+                        ==> 이를 위한 패키지는 dotenv.
+                            비밀 키는 .env라는 파일에 모아두고, 
+                            dotenv가 .env 파일을 읽어 process.env 객체에 넣어줌.
+            5) npm i dotenv
+            6) /nodebird/.env  (생성 및 작성)
+            7) /nodebird/app.js  (수정)
+                + dotenv 설정
+                    - app.js에서 require('dotenv').config; 호출 
+                    - 비밀키가 쓰일 부분에 dotenv에서 설정해준 비밀키를 설정하기
+                        ex) process.env.[.env에서 설정한 비밀키 명]              
+                + 서버 시작 시 .env의 비밀키들을 process.env에 넣어짐
+                + .env 파일이 유출되지 않게 관리하기.
+            8) 기본 라우터 및 템플릿 엔진 생성
+                _1  /nodebird/routes/page.js
+                _2  /nodebird/views/layout.pug
+                _3  /nodebird/views/main.pug
+                _4  /nodebird/views/profile.pug
+                _5  /nodebird/views/join.pug
+                _6  /nodebird/views/error.pug
+                _7  /nodebird/public/main.css
+
+
+
+
+                    
