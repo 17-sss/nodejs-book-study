@@ -2,15 +2,19 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const path = requrie('path');
+const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 
 require('dotenv').config(); // [9.1] MEMO_2. 7) dotenv 설정
 
 const pageRouter = require('./routes/page');
+const { sequelize } = require('./models');  // [9.2]
 
 const app = express();
+sequelize.sync();   // [9.2]
+
+app.locals.pretty = true;   // [ME, Custom]
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

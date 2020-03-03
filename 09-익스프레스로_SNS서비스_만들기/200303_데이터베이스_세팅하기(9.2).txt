@@ -1,0 +1,19 @@
+* 데이터베이스 세팅하기    
+    + 파일 작업 순서, 위치 및 메모
+        1. 시퀄라이즈 모델 생성
+            1) /nodebird/models/user.js         (주석 메모 있음)
+            2) /nodebird/models/post.js
+            3) /nodebird/models/hashtag.js
+            4) /nodebird/models/index.js        (전체적 수정 및 주석 메모 있음)
+            [참고] nodebird의 모델은 총 5개. 
+                - User, Hashtag, Post와 시퀄라이즈가 관계를 파악하여 생성한 
+                    PostHashtag, Follow까지..
+
+        2. 데이터베이스 및 서버와 연결 (1. 에서 생성한 모델들 연결)                    
+            1) 데이터베이스 이름은 nodebird
+            2) /nodebird/config/config.json     (수정)
+            3) cmd :: /nodebird 
+                > sequelize db:create
+            4) /nodebird/app.js                 (수정)
+            5) cmd :: /nodebird 
+                > npm start

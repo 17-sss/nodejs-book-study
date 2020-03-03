@@ -1,1 +1,4 @@
 * 저자 github:  https://github.com/zerocho/nodejs-book
+* 주의사항 (저자)
+    - MySQL은 5.7버전을 설치하시고(8버전을 설치하면 legacy authentication 속성을 활성화해야 합니다) 
+        Sequelize는 4버전을 설치하셔야(npm i sequelize@4) find 관련 에러가 안 납니다.
