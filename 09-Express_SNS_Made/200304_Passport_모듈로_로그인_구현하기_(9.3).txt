@@ -1,0 +1,19 @@
+* Passport 모듈로 로그인 구현하기
+    + 파일 작업 순서, 위치 및 메모
+        1. Passport 관련 패키지 설치
+            npm i passport passport-local passport-kakao bcrypt
+                [MEMO]
+                    bcrypt 패키지 설치하려는데 오류..
+                [해결방안] :: https://www.inflearn.com/questions/15344
+                    1) 관리자 권한으로 CMD 실행 후
+                    2) npm i --global --production windows-build-tools
+                        - windows-build-tools란..
+                            윈도우에서 필수인 c, c++ 관련된 것들과 파이썬같은 것을 설치해서
+                            다른 언어를 사용하는 라이브러리르 지원할 수 있게 해줌.
+                    3) npm i -g node-pre-gyp --fallback-to-build
+                    4) 설치하려는 프로젝트 폴더로 가서 다시 bcrypt 설치
+                    5) 이래도 안된다면 Node 버전을 stable(안정버전)으로 설치 후 다시 시도.
+                    !) 파일 경로명에 한글이 있으면 안됨.
+        2. 프로젝트 파일
+            1) /nodebird/app.js (수정)
+
