@@ -1,0 +1,38 @@
+* Passport 모듈로 로그인 구현하기
+    + Passport 관련 패키지 설치
+        npm i passport passport-local passport-kakao bcrypt
+            [MEMO]
+                bcrypt 패키지 설치하려는데 오류..
+            [해결방안] :: https://www.inflearn.com/questions/15344
+                1) 관리자 권한으로 CMD 실행 후
+                2) npm i --global --production windows-build-tools
+                    - windows-build-tools란..
+                        윈도우에서 필수인 c, c++ 관련된 것들과 파이썬같은 것을 설치해서
+                        다른 언어를 사용하는 라이브러리르 지원할 수 있게 해줌.
+                3) npm i -g node-pre-gyp --fallback-to-build
+                4) 설치하려는 프로젝트 폴더로 가서 다시 bcrypt 설치
+                5) 이래도 안된다면 Node 버전을 stable(안정버전)으로 설치 후 다시 시도.
+                !) 파일 경로명에 한글이 있으면 안됨.
+
+    + 프로젝트 파일 작업 순서 및 메모
+        1) /nodebird/app.js (수정)
+            - passport.initialize() 미들웨어는 요청(req 객체)에 passport 설정을 심음
+            - passport.session() 미들웨어는  req.session 객체에 passport 정보를 저장
+            - req.session 객체는 express-session에서 생성하기에, 
+                passport 미들웨어는 express-session 미들웨어보다 뒤에 연결해야함
+        2) /nodebird/passport/index.js  (생성)
+            - serializeUser
+                req.session 객체에 어떤 데이터를 저장할지 선택.
+                매개변수로 user를 받아 done 함수에 두번째 인자로 user.id를 넘기고 있음.
+                done 함수의 첫 번째 인자는 에러 발생 시 사용되는것.
+                done 함수의 두 번째 인자가 중요.
+                    세션에 사용자 정보를 모두 저장하면 세션의 용량이 커지고 데이터 일관성에
+                    문제가 발생하므로 사용자의 아이디만 저장하라고 명령한 것.
+            - deserializeUser
+                passport.session() 미들웨어가 이 메서드를 호출.
+                serializeUser에서 세션에 저장했던 아이디를 받아 데이터베이스에서 사용자 정보를 조회
+                조회한 정보를 req.user에 저장하므로, req.user를 통해 로그인한 사용자의 정보를 가져올 수 있음.
+            @ 정리
+                ▶ serializeUser는 사용자 정보 객체를 세션에 아이디로 저장하는 것.
+                ▶ deserializeUser는 세션에 저장한 아이디를 통해 사용자 정보 객체를 불러오는 것.
+

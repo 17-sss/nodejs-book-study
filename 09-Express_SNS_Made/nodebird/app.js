@@ -5,14 +5,17 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');   // [9.3]
 
 require('dotenv').config(); // [9.1] MEMO_2. 7) dotenv 설정
 
 const pageRouter = require('./routes/page');
 const { sequelize } = require('./models');  // [9.2]
+const passportConfig = require('./passport');   // [9.3] ./passport/index.js' 와 같음
 
 const app = express();
 sequelize.sync();   // [9.2]
+passportConfig(passport);   // [9.3]
 
 app.locals.pretty = true;   // [ME, Custom]
 
@@ -40,6 +43,12 @@ app.use(session({
 }));
 
 app.use(flash());
+
+// [9.3] passport.initialize() 미들웨어는 요청(req 객체)에 passport 설정을 심음
+app.use(passport.initialize()); 
+
+// [9.3] passport.session() 미들웨어는  req.session 객체에 passport 정보를 저장
+app.use(passport.session());    
 
 app.use('/', pageRouter);
 
