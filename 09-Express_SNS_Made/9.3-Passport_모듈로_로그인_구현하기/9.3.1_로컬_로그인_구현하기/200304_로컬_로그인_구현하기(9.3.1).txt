@@ -1,0 +1,13 @@
+* 로컬 로그인 구현하기
+    + 로컬 로그인이란, 해당 사이트에서 회원가입해서 로그인하는 것.
+    + 프로젝트 파일 작업 순서 및 메모
+        1.  /nodebird/routes/middlewares.js
+            1) 라우터에 접근 권한을 제어하는 미들웨어임     
+                - 로그인한 사람은 회원가입 접근 금지되어야 하며,
+                    로그인하지 않은 사용자는 로그아웃 라이터 접근 금지 되어야.. 
+                    이를 제어하기 위한 미들웨어임
+        2.  /nodebird/routes/page.js    
+            1)  middlewares에서 작업한 isLoggedIn & isNotLoggedIn 미들웨어 활용
+        3.  /nodebird/auth.js
+            
+            

@@ -15,12 +15,12 @@
                 !) 파일 경로명에 한글이 있으면 안됨.
 
     + 프로젝트 파일 작업 순서 및 메모
-        1) /nodebird/app.js (수정)
+        1. /nodebird/app.js (수정)
             - passport.initialize() 미들웨어는 요청(req 객체)에 passport 설정을 심음
             - passport.session() 미들웨어는  req.session 객체에 passport 정보를 저장
             - req.session 객체는 express-session에서 생성하기에, 
                 passport 미들웨어는 express-session 미들웨어보다 뒤에 연결해야함
-        2) /nodebird/passport/index.js  (생성)
+        2. /nodebird/passport/index.js  (생성)
             - serializeUser
                 req.session 객체에 어떤 데이터를 저장할지 선택.
                 매개변수로 user를 받아 done 함수에 두번째 인자로 user.id를 넘기고 있음.
