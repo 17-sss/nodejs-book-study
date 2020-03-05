@@ -1,6 +1,6 @@
 * 로컬 로그인 구현하기
     + 로컬 로그인이란, 해당 사이트에서 회원가입해서 로그인하는 것.
-    + 프로젝트 파일 작업 순서 및 메모
+    + 프로젝트 파일 작업 순서 및 메모  
         1.  /nodebird/routes/middlewares.js
             1) 라우터에 접근 권한을 제어하는 미들웨어임     
                 - 로그인한 사람은 회원가입 접근 금지되어야 하며,
@@ -8,6 +8,12 @@
                     이를 제어하기 위한 미들웨어임
         2.  /nodebird/routes/page.js    
             1)  middlewares에서 작업한 isLoggedIn & isNotLoggedIn 미들웨어 활용
-        3.  /nodebird/auth.js
-            
-            
+        3.  /nodebird/auth.js                       (주석 참고)
+        4.  /nodebird/passport/localStrategy.js     (주석 참고)
+            1) done 함수의 인자
+                - 첫번째 인자를 사용하는 경우는 서버쪽에 에러가 발생했을 경우
+                - 두번째 인자를 사용하는 경우는 로그인에 성공하여 정보를 보낼 때.
+                - 세번째 인자를 사용하는 경우는 로그인 처리 과정에서 비번이 일치하지 않거나 존재하지
+                    않는 회원일 때와 같은 사용자 정의 에러가 발생하였을 때.                
+            2) done이 호출된 후에는..
+                - 다시 passport.authenticate의 콜백 함수에서 나머지 로직이 실행됨.
