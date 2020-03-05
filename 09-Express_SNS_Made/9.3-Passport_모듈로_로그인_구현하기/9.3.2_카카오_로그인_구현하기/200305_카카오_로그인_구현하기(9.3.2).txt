@@ -1,0 +1,11 @@
+* 카카오 로그인 구현하기
+    + 프로젝트 파일 작업 순서 및 메모  
+        1.  /nodebird/passport/kakaoStrategy.js
+        2.  /nodebird/routes/auth.js    (수정)
+        3.  /nodebird/app.js            (수정)
+        4. https://developers.kakao.com 접속하여        
+            - 회원가입 후, 애플리케이션 만들고 REST API 키 정보로 
+                .env 파일의 KAKAO_ID 값에 대입하기.
+            - (생략..)  자세한 과정은 교제 필히 참고!!
+
+    ++ 지금까지의 과정들 다시해야할듯.. 9단원..현재 만든앱 돌아가지 않음.
