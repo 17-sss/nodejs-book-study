@@ -1,0 +1,18 @@
+* Passport 모듈로 로그인 구현하기
+    + Multer
+        1. 이미지는 보통 input[type=file] 태그와 form 태그를 통해서 업로드하는데, 
+            이때 form의 인코딩 타입은 multipart/form-data인 경우가 많음
+            1) 이런 형식을 올라온 데이터는 직접 처리하기 힘듬
+                ▷ multipart 처리용 모듈을 사용하는 것이 좋음
+                ▷ 대표적인 것이 Multer
+        2. Multer는 미들웨어 역할을 함. 
+            앱 전체에 붙는 미들웨어는 아니지만, multipart 데이터를 업로드하는 라우터에 붙은 미들웨어임
+        3. 현재 실습 앱에선 서버 디스크에 저장하지만, 서버에 문제가 생겼을 경우, 파일이 날아갈수도 있음.
+            1) AWS S3나 Cloud Storage 같은 정적 파일 제공 서비스를 사용하여 이미즈를 따로 저장, 제공하는 것이 좋음
+            2) multer-s3나 multer-google-storage 같은 모듈을 찾아보기.
+    + 프로젝트 파일 작업 순서 및 메모
+        1. 콘솔
+            > npm i multer  
+        2. /nodebird/routes/post.js     (주석 다수. 참고 바람)
+
+        
