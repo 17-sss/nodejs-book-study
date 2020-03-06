@@ -1,14 +1,12 @@
 // [9.3.2]
 const kakaoStrategy = require('passport-kakao').Strategy;
 
-const {
-    User
-} = require('../models');
+const { User } = require('../models');
 
 module.exports = (passport) => {
     passport.use(new kakaoStrategy({
         clientID: process.env.KAKAO_ID,
-        callbackURL: './auth/kakao/callback',
+        callbackURL: '/auth/kakao/callback',
         /* 
             + clientID는 카카오에서 발급해주는 아이디 (APP ID), 
                 노출되지 않아야 하므로 .env 설정

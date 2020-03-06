@@ -42,6 +42,7 @@ router.post('/login', isNotLoggedIn, (req, res, next)=> {
     passport.authenticate('local', (authError, user, info) => { // 미들웨어임
         if (authError) {
             console.error(authError);
+            return next(authError);
         } 
         if (!user) {
             req.flash('loginError', info.message);

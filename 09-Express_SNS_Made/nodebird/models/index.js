@@ -21,12 +21,12 @@ db.Post.belongsTo(db.User); // 시퀄라이즈에서 Post모델에 userId 컬럼
 
 // [2] Post와 Hashtag 모델은 다대다 관계 
 // 시퀄라이즈가 관계를 분석하여 postHashtag라는 이름의 테이블을 자동생성.
-  // 컬럼의 이름은 PostId 그리고 hashtagId 임.
+// 컬럼의 이름은 PostId 그리고 hashtagId 임.
 db.Post.belongsToMany(db.Hashtag, {
   through: 'PostHashtag'
 });
 db.Hashtag.belongsToMany(db.Post, {
-  through: 'PostHashtag'  
+  through: 'PostHashtag'
 });
 /* 
   post 데이터에는 getHashtags, addHashTags 등의 메서드를 추가
@@ -35,9 +35,9 @@ db.Hashtag.belongsToMany(db.Post, {
 // ======
 
 // [3] 같은 테이블끼리도 다대다 관계가 가능 (팔로잉 기능도 다대다 관계)
-  // 시퀄라이즈가 Follow라는 테이블을 생성
-db.User.belongsToMany(db.User, {  
-  foreignKey: 'followingId',  
+// 시퀄라이즈가 Follow라는 테이블을 생성
+db.User.belongsToMany(db.User, {
+  foreignKey: 'followingId',
   as: 'Followers',
   through: 'Follow',
 });

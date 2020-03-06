@@ -18,7 +18,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
 // --
 
 // router.get('/join', (req, res) => {  // [9.1]
-router.get('/join', isLoggedIn, (req, res) => { // [9.3.1]
+router.get('/join', isNotLoggedIn, (req, res) => { // [9.3.1]
     res.render('join', {
         title: '회원가입 - NodeBird', 
         user: req.user, // [9.3.1]

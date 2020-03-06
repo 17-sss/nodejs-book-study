@@ -10,8 +10,8 @@ const passport = require('passport');   // [9.3]
 require('dotenv').config(); // [9.1] MEMO_2. 7) dotenv 설정
 
 const pageRouter = require('./routes/page');
-const { sequelize } = require('./models');  // [9.2]
 const authRouter = require('./routes/auth');    // [9.3.2]  
+const { sequelize } = require('./models');  // [9.2]
 const passportConfig = require('./passport');   // [9.3] ./passport/index.js' 와 같음
 
 const app = express();
@@ -52,7 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());    
 
 app.use('/', pageRouter);
-app.use('/auth', pageRouter);      // [9.3.2]  
+app.use('/auth', authRouter);      // [9.3.2]  
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
@@ -69,5 +69,5 @@ app.use((err, req, res, next) => {
 
 app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트에서 대기중');
-    console.log('http://localhost:' + app.get('port'));
+    console.log('ADDRESS:', 'http://localhost:' + app.get('port'));
 });
