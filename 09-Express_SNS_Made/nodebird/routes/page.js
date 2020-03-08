@@ -1,7 +1,7 @@
 // [9.1]
 const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares'); // [9.3.1]
-
+const { Post, User } = require('../models');    // [9.4]
 const router = express.Router();
 
 /*
@@ -27,6 +27,8 @@ router.get('/join', isNotLoggedIn, (req, res) => { // [9.3.1]
     });
 });
 
+/*
+// [9.1] ~ [9.3]
 router.get('/', (req, res, next) => {
     res.render('main', {
         title: 'NodeBird',
@@ -36,5 +38,33 @@ router.get('/', (req, res, next) => {
         loginError: req.flash('loginError'),
     });
 });
+*/
 
-module.exports = router;
+// [9.4]
+router.get('/', (req, res, next) => {
+    Post.findAll({
+        include: {
+            model: User,
+            attributes: ['id', 'nick'],
+        },
+        order: [
+            ['createdAt', 'DESC']
+        ],
+    })
+        .then((posts) => {
+            res.render('main', {
+                title: 'NodeBird',
+                twits: posts,
+                user: req.user,
+                loginError: req.flash('loginError'),
+            });
+        })
+        .catch((error)=>{
+            console.error(error);
+            next(error);
+        });
+});
+
+
+
+module.exports = router; 

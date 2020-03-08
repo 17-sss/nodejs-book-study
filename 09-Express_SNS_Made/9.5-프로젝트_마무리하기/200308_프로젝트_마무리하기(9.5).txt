@@ -1,0 +1,6 @@
+* 프로젝트 마무리하기
+    + 프로젝트 파일 작업 순서 및 메모
+        1. /nodebird/routes/post.js     (수정)
+        2. /nodebird/routes/user.js     (생성)
+        3. /nodebird/passport/index.js  (수정)
+        4. /nodebird/app.js             (수정)

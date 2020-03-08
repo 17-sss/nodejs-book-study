@@ -11,6 +11,7 @@ require('dotenv').config(); // [9.1] MEMO_2. 7) dotenv 설정
 
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');    // [9.3.2]  
+const postRouter = require('./routes/post');    // [9.5]
 const { sequelize } = require('./models');  // [9.2]
 const passportConfig = require('./passport');   // [9.3] ./passport/index.js' 와 같음
 
@@ -26,6 +27,7 @@ app.set('port', process.env.PORT || 8001);
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));    // [9.5]
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
@@ -53,6 +55,8 @@ app.use(passport.session());
 
 app.use('/', pageRouter);
 app.use('/auth', authRouter);      // [9.3.2]  
+app.use('/post', postRouter);    // [9.5]
+app.use('/user', userRouter);    // [9.5]
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

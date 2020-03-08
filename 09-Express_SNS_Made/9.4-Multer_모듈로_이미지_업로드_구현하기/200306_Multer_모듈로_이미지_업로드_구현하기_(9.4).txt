@@ -14,5 +14,4 @@
         1. 콘솔
             > npm i multer  
         2. /nodebird/routes/post.js     (주석 다수. 참고 바람)
-
-        
+        3. /nodebird/routes/page.js
