@@ -12,6 +12,7 @@ require('dotenv').config(); // [9.1] MEMO_2. 7) dotenv 설정
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');    // [9.3.2]  
 const postRouter = require('./routes/post');    // [9.5]
+const userRouter = require('./routes/user');    // [9.5]
 const { sequelize } = require('./models');  // [9.2]
 const passportConfig = require('./passport');   // [9.3] ./passport/index.js' 와 같음
 
