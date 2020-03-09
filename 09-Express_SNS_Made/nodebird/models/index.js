@@ -58,7 +58,8 @@ db.User.belongsToMany(db.User, {
   
   3) as 옵션: 시퀄라이즈가 JOIN 작업 시 사용하는 이름.
     as에 등록한 이름을 바탕으로 시퀄라이즈는 
-    getFollowings, getFollowers, addFollowing, addFollower 등 메서드를 자동으로 추가함
+    getFollowings, getFollowers, addFollowing, addFollower, 
+    setFollowing, removeFollowing 등 메서드를 자동으로 추가함
 */
 // ======
 

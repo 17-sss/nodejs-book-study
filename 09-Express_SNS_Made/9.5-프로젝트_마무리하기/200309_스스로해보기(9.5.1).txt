@@ -1,0 +1,18 @@
+* 스스로 해보기
+    + 기타 메모
+        1. pug에서 id와 class태그
+            - ex) button#twit-btn.btn(type='submit') 짹짹
+            1) #twit-btn은  id
+            2) .btn는       class
+             
+
+    + 프로젝트 파일 작업 순서 및 메모
+        1. 팔로잉 끊기 (시퀄라이즈의 destroy메서드와 라우터 활용)
+            1)  /nodebird/views/profile.pug     (언팔로우 버튼 추가)
+            2)  /nodebird/public/main.css       (언팔로우 버튼 디자인 생성)
+            3)  /nodebird/routes/user.js        (언팔로우 처리) 
+                - 참고링크
+                    https://helloinyong.tistory.com/108
+                    https://www.zerocho.com/category/etc/post/5b4c1d526a3abe001b94de0b 
+
+        2. 게시글 삭제 (등록자와 현재 로그인한 사용자가 같을 때, 시퀄라이즈의 destroy메서드와 라우터 활용)
