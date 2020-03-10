@@ -16,6 +16,24 @@ block content
       if user.Followers
         for follower in user.Followers
           div= follower.nick
+  //- [9.5.1] 스스로해보기 - 프로필 정보 변경하기 START ===
+  .userInfo
+    h3(style="text-align: center") 내 정보 수정
+    br
+    form#userInfo-form(action='/auth/update' method='post' style="text-align: center")      
+      div(style="float: left; margin: 10px 0;")
+        span(style="margin-right: 5px") 이메일
+        input(type="text" name="email" value=user.email readonly style="background-color: lightgray;")
+      div(style="float: left; margin: 10px 0;")
+        span(style="margin-right: 5px") 닉네임
+        input(type="text" name="nick" value=user.nick)
+      div(style="float: left; margin: 10px 0;")
+        span(style="margin-right: 5px") 비밀번호
+        input(type="password" name="password" required)
+      div(style="margin: 10px 0;")
+        button.userInfo-submit(type="submit") 수정
+
+  //- [9.5.1] 스스로해보기 - 프로필 정보 변경하기 END ===
   script.
     //- [9.5.1] 스스로해보기 - 팔로잉 끊기 START ===
     document.querySelectorAll('.twit-unfollow').forEach(function (tag) {

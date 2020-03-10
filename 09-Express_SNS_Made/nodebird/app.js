@@ -49,7 +49,7 @@ app.use(session({
 app.use(flash());
 
 // [9.3] passport.initialize() 미들웨어는 요청(req 객체)에 passport 설정을 심음
-app.use(passport.initialize()); 
+app.use(passport.initialize()); // passport 초기화
 
 // [9.3] passport.session() 미들웨어는  req.session 객체에 passport 정보를 저장
 app.use(passport.session());    

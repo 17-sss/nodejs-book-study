@@ -77,6 +77,29 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
+
+// [9.5.1] 스스로해보기 - 프로필 정보 변경하기 START ===
+router.post('/update', isLoggedIn, async (req, res, next) =>{ 
+    const { email, nick, password } = req.body;
+    try {
+        const hash = await bcrypt.hash(password, 12);
+        const data = {
+            email: email,
+            nick: nick,
+            password: hash,
+        };
+        await User.update(data, {
+            where: {id: req.user.id}
+        });
+        return res.redirect('/profile');
+
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
+// [9.5.1] 스스로해보기 - 프로필 정보 변경하기 END ===
+
 // [9.3.2 (카카오)] START 
 router.get('/kakao', passport.authenticate('kakao'));
 

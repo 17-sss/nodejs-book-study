@@ -18,3 +18,27 @@
         2. 게시글 삭제 (등록자와 현재 로그인한 사용자가 같을 때, 시퀄라이즈의 destroy메서드와 라우터 활용)
             1)  /nodebird/views/main.pug        (게시물 삭제 버튼 추가 및 동작)            
             2)  /nodebird/routes/post.js        (게시물 삭제 처리) 
+
+        3. 프로필 정보 변경하기(시퀄라이즈의 update메서드와 라우터 활용)
+            1)  /nodebird/views/profile.pug         (개인정보 수정 폼 추가 및 동작)
+            2)  /nodebird/public/main.css           (개인정보 수정 버튼 디자인 생성) 
+            3)  /nodebird/routes/auth.js            (개인정보 수정 처리)
+                - 의문점
+                    1. req.user가 어디서 이미 생성되는지 의문점이 생김
+                            > passport 미들웨어를 통해 저장됨. 
+                                passport의 deserializeUser에서 생성
+                                deserializeUser는 로그인 후 매 라우터 요청마다 실행
+                            > 참고 링크
+                                https://velog.io/@ground4ekd/nodejs-passport
+                                https://www.inflearn.com/questions/14331
+                - Log:: 시퀄라이즈 update 쿼리 실행 
+                    Executing (default): 
+                        UPDATE 
+                            `users` 
+                        SET 
+                            `email`='test01@naver.com',
+                            `nick`='test011',
+                            `password`='$2b$12$GapvN/DWADNXKDhvMr7xZOEaYEPlO6ATcskCz2qenFzaEJWZ.LS.e',
+                            `updatedAt`='2020-03-10 07:42:22' 
+                        WHERE 
+                            ((`deletedAt` > '2020-03-10 07:42:22' OR `deletedAt` IS NULL) AND `id` = 1)
