@@ -34,7 +34,7 @@ block content
                   console.error(xhr.responseText);
                 }
               };
-              xhr.open('POST', '/user/' + userId + '/unfollow');
+              xhr.open('DELETE', '/user/' + userId + '/unfollow');
               xhr.send();
             }
           }

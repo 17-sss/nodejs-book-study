@@ -153,4 +153,17 @@ router.get('/hashtag', async (req, res, next) => {
 });
 // --
 
+// [9.5.1] 스스로해보기 - 게시물 삭제 START ===
+router.post('/:twitId/delete', isLoggedIn, async(req, res, next) => {    
+    try {
+        await Post.destroy( { where: {id: req.params.twitId} });
+        console.log('req.params.twitId:', req.params.twitId, 'req.user.id:', req.user.id);
+        res.send('success');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+// [9.5.1] 스스로해보기 - 게시물 삭제 END ===
+
 module.exports = router;

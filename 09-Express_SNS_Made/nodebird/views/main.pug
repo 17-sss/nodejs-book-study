@@ -23,6 +23,11 @@ block content
           input.twit-user-id(type='hidden' value=twit.user.id)
           input.twit-id(type='hidden' value=twit.id)
           .twit-author= twit.user.nick
+          //- [9.5.1] 스스로해보기 - 게시물 삭제 START ===
+          if user
+            if user.id === twit.user.id
+              button#twit-del.btn(type="button" style="float: right") 삭제
+          //- [9.5.1] 스스로해보기 - 게시물 삭제 END ===
           -const follow = user && user.Followings.map(f => f.id).includes(twit.user.id);
           if user && user.id !== twit.user.id && !follow
             button.twit-follow 팔로우하기
@@ -74,3 +79,32 @@ block content
         }
       });
     });
+    //- [9.5.1] 스스로해보기 - 게시물 삭제 START ===
+    document.querySelectorAll('#twit-del').forEach( (tag) => {
+      tag.addEventListener('click', () => {
+        var isLoggedIn = document.querySelector('#my-id');
+        if (isLoggedIn) {
+          var curLoginId = isLoggedIn.value;
+          var writerId = tag.parentNode.querySelector('.twit-user-id').value;
+          var twitId = tag.parentNode.querySelector('.twit-id').value;
+          if (writerId === curLoginId) {
+            if (confirm('해당 게시글을 삭제하시겠습니까?')) {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = () => {
+                if (xhr.status === 200 ) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              //- xhr.open('DELETE', '/post/' + twitId + '/delete')
+              xhr.open('POST', '/post/' + twitId + '/delete');
+              xhr.send();   
+            }
+          } else {
+            alert('false');
+          }
+        }
+      })
+    })
+    //- [9.5.1] 스스로해보기 - 게시물 삭제 END ===
