@@ -35,6 +35,14 @@ block content
           if twit.img
             .twit-img
               img(src=twit.img alt='섬네일')
+          //- [9.5.1] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요  취소하기 START ===
+            // twit은 post 테이블이라 생각해보고 const like 보면 됨.
+          -const like = user && twit && twit.Liker.map(l => l.id).includes(user.id); 
+          if user && !like
+            button#twit-like.like-btn(type="button") 좋아요
+          else if user && like   
+            button#twit-unlike.like-btn(type="button") 좋아요 취소                        
+          //- [9.5.1] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소하기 END ===
   script.
     if (document.getElementById('img')) {
       document.getElementById('img').addEventListener('change', function (e) {
@@ -108,3 +116,91 @@ block content
       })
     })
     //- [9.5.1] 스스로해보기 - 게시물 삭제 END ===
+
+        
+    //- [9.5.1, 해설] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소 하기 START ===
+    //- 1) 좋아요
+    document.querySelectorAll('#twit-like').forEach((tag) => {
+      tag.addEventListener('click', () => {
+        var isLoggedIn = document.querySelector('#my-id');
+        var twitId = tag.parentNode.querySelector('.twit-id').value;
+        
+        if (isLoggedIn) {
+          var xhr = new XMLHttpRequest();
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              location.reload();
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+
+          xhr.open('POST', '/post/'+twitId+'/like');
+          xhr.send();
+        }
+      });
+    });
+
+    //- 2) 좋아요 취소
+    document.querySelectorAll('#twit-unlike').forEach((tag) => {
+      tag.addEventListener('click', () => {
+        var isLoggedIn = document.querySelector('#my-id');
+        var twitId = tag.parentNode.querySelector('.twit-id').value;
+        
+        if (isLoggedIn) {
+          var xhr = new XMLHttpRequest();
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              location.reload();
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+
+          xhr.open('DELETE', '/post/'+twitId+'/like');
+          xhr.send();
+        }
+      });
+    });
+    //- [9.5.1, 해설] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소 하기 END ===
+    
+    //- [9.5.1, ME] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소하기 START ===  
+      // 좋아요 버튼 누르면 서버에 전송되어 적용됬던거까지 했었음.. 그 이후 막혀서 유튜브 봄
+        // 나중에 내가 생각했던 (좋아요 한 사람 목록 등) 것 구현해보기
+      // 좋아요 취소는 안함
+    /* 
+    document.querySelectorAll('#twit-like').forEach((tag) => {
+      tag.addEventListener('click', () => {
+        var isLoggedIn = document.querySelector('#my-id');
+        if (isLoggedIn) {
+          var curLoginId = isLoggedIn.value;
+          var writerId = tag.parentNode.querySelector('.twit-user-id').value;
+          var twitId = tag.parentNode.querySelector('.twit-id').value;
+
+          if (writerId !== curLoginId) {
+            var xhr = new XMLHttpRequest();
+            
+            //- if 절 필요 (좋아요테이블관련) { 
+            xhr.onload = () => {
+              if (xhr.status === 200 ) {
+                location.reload();
+              } else {
+                console.error(xhr.responseText);
+              }
+            }
+            //- }    
+
+            xhr.open('POST', '/post/' + twitId + '/like');
+            xhr.send();   
+          }
+
+        } else {
+          alert('false');
+        }
+      });
+    });
+    */
+    //- [9.5.1, ME] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소하기 END ===
+
+    
+    

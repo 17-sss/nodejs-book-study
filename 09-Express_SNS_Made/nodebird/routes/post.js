@@ -166,4 +166,50 @@ router.post('/:twitId/delete', isLoggedIn, async(req, res, next) => {
 });
 // [9.5.1] 스스로해보기 - 게시물 삭제 END ===
 
+
+// [9.5.1] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소하기 START ===
+/*
+// [ME] 좋아요
+router.post('/:id/like', isLoggedIn, async(req, res, next) => {    
+    try {
+        const post = await Post.find({where: { id: req.params.twitId }});
+        await post.addUser(req.user.id);
+        res.send('success');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// [ME] 좋아요 취소 :: 안함
+*/
+
+// [풀이] 좋아요
+router.post('/:id/like', async(req, res, next) => {    
+    try {
+        const post = await Post.find({where: {id: req.params.id}});
+        await post.addLiker(req.user.id);
+            // 왜 addLiker인지는 models/index 보면 알게됨
+        res.send('OK');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// [풀이] 좋아요 취소 
+router.delete('/:id/like', async(req, res, next) => {    
+    try {
+        const post = await Post.find({where: {id: req.params.id}});
+        // console.log(post);
+        await post.removeLiker(req.user.id);
+        res.send('OK');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// [9.5.1] 스스로해보기 - 게시글 좋아요 누르기 및 좋아요 취소하기 END ===
+
 module.exports = router;

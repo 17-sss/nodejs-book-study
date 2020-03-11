@@ -40,7 +40,46 @@ router.get('/', (req, res, next) => {
 });
 */
 
-// [9.4]
+// [9.4] 
+// async await ver
+router.get('/', async(req, res, next) => {
+    try {
+        const posts = await Post.findAll({
+        
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'nick'],
+                },
+            // [9.5.1] 스스로해보기 - 게시글 (좋아요) 누르기 및 좋아요 취소하기 START === 
+                // include에서 같은 모델이 여러개면 as로 구분
+                { 
+                    model: User,
+                    attributes: ['id', 'nick'],
+                    as: 'Liker',
+                }
+            ],
+            // [9.5.1] 스스로해보기 - 게시글 (좋아요) 누르기 및 좋아요 취소하기 END ===
+            order: [
+                ['createdAt', 'DESC']
+            ],
+        });
+
+        // console.log(posts); // [9.5.1] 게시글 (좋아요) 누르기 및 좋아요 취소하기 TEST
+        
+        res.render('main', {
+            title: 'NodeBird',
+            twits: posts,
+            user: req.user,
+            loginError: req.flash('loginError'),
+        });
+    } catch (error) {
+        console.error(error);
+        next(error);    
+    }    
+});
+/*
+// Promise Ver
 router.get('/', (req, res, next) => {
     Post.findAll({
         include: {
@@ -64,6 +103,7 @@ router.get('/', (req, res, next) => {
             next(error);
         });
 });
+*/
 
 
 

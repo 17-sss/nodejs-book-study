@@ -42,3 +42,12 @@
                             `updatedAt`='2020-03-10 07:42:22' 
                         WHERE 
                             ((`deletedAt` > '2020-03-10 07:42:22' OR `deletedAt` IS NULL) AND `id` = 1)
+        
+        4. 게시글 좋아요 누르기 및 좋아요 취소하기(사용자-게시글 모델 간 N:M 관계 정립 후 라우터 활용)
+            - 풀이: https://www.youtube.com/watch?v=x7H_mIa5rTE
+            1)  /nodebird/views/main.pug        (좋아요 버튼 추가 및 동작, 좋아요한 유저 표시)            
+            2)  /nodebird/public/main.css       (좋아요 버튼 디자인 생성)     
+            3)  /nodebird/models/index.js       (User와 Post 간 N:M 관계 작성)
+            4)  /nodebird/routes/page.js        (좋아요 관련한 정보를 불러오기위해  get '/' 부분 수정)
+            5)  /nodebird/routes/post.js        (좋아요 / 좋아요 취소 처리)
+            

@@ -63,4 +63,12 @@ db.User.belongsToMany(db.User, {
 */
 // ======
 
+
+//- [9.5.1] 스스로해보기 - 게시글 (좋아요) 누르기 및 좋아요 취소하기 START ===
+// [4] Post와 User 모델 : 다대다 관계 (좋아요 기능)
+db.User.belongsToMany(db.Post, {through: 'postLike'});
+db.Post.belongsToMany(db.User, {through: 'postLike', as: 'Liker'});  
+// ======
+//- [9.5.1] 스스로해보기 - 게시글 (좋아요) 누르기 및 좋아요 취소하기 END ===
+
 module.exports = db;
