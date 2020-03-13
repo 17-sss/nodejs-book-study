@@ -1,0 +1,7 @@
+* 프로젝트 구조 갖추기
+    + 프로젝트 파일 작업 순서 및 메모
+        1. /nodebird-api/package.json   (생성 및 작성)
+            +) npm init 으로 생성해도 됨.
+        2. cmd
+            1) nodebird-api 경로로 이동 후
+                npm install
