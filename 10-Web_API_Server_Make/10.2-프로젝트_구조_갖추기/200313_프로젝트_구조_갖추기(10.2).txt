@@ -5,15 +5,15 @@
         2. cmd
             1) nodebird-api 경로로 이동 후
                 npm install
-        3. NodeBird 프로젝트의 config, models, passport 폴더와 내용물 
-            복사하여 nodebird-api 폴더에 붙여넣기
-        4. NodeBird 프로젝트의 routes 폴더 안에서 일부 복사
-            1)  /routes/auth.js
-            2)  /routes/middlewares.js
-        5. NodeBird 프로젝트의 .env 파일 복사
-        6.  /nodebird-api/views/error.pug     (생성)
-        7.  /nodebird-api/app.js              (생성)
-        8.  /nodebird-api/models/domain.js    (생성)
-        9.  /nodebird-api/models/index.js     (수정)
-        10. /nodebird-api/views/login.pug     (생성)
-        11. /nodebird-api/routes/index.js     (생성)
+        3. NodeBird 프로젝트에서 내용물 복사 리스트
+            1) config, models, passport 폴더 전부
+            2) routes 폴더
+                /auth.js  
+                /middleware.js
+            3) .env 파일 복사   
+        4.  /nodebird-api/views/error.pug       (생성)
+        5.  /nodebird-api/app.js                (생성)
+        6.  /nodebird-api/models/domain.js      (생성)
+        7.  /nodebird-api/models/index.js       (수정)
+        8. /nodebird-api/views/login.pug        (생성)
+        9. /nodebird-api/routes/index.js        (생성)
