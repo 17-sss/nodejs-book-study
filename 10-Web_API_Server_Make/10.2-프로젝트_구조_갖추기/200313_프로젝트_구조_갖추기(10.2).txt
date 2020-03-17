@@ -17,3 +17,15 @@
         7.  /nodebird-api/models/index.js       (수정)
         8. /nodebird-api/views/login.pug        (생성)
         9. /nodebird-api/routes/index.js        (생성)
+            1) uuid는 범용 고유 식별자로 고유한 문자열을 만들고 싶을 때 사용
+                - 완벽하게 고유하진 않지만 실제 사용 시 중복될 가능성은 거의 없음
+    
+    + nodebird-api 실행
+        1. nodebird 프로젝트에 등록된 계정으로 nodebird-api 로그인
+        2. 로그인 후엔 도메인 등록 화면이 나옴.
+            1) 도메인을 등록하는 이유는 등록한 도메인에서만 API를 사용할 수 있게 하기 위해.
+                - 웹 브라우저에서 요청을 보낼 때, 응답 하는 곳과 도메인이 다르면 CORS 에러가 발생할 수도.
+                    > CORS: Cross-Origin Resource Sharing
+        3. "localhost:8003" (옵션: 무료) 등록
+                    
+
