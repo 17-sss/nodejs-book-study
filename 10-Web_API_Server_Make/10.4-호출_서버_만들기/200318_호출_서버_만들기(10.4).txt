@@ -1,0 +1,36 @@
+* 호출 서버 만들기
+    + 메모
+        - 호출서버: 서버지만 다른 서버에게 요청을 보내므로 클라이언트 역할을 함
+            > API 제공자가 아닌 API 사용자의 입장에서 진행해야 함
+            > 사용자는 nodebird앱의 데이터를 가져오고자하는 사용자
+        - 이 서버의 주목적은 nodebird-api의 API를 통해 테이터를 가져오는 것
+
+    + 프로젝트 파일 작업 순서 및 메모
+        1. nodebird-call 폴더 생성 (nodebird-api 폴더와 같은 위치에 생성)
+        2. /nodebird-call/package.json      (생성)
+        3. 콘솔
+            1) npm i
+        4. /nodebird-call/app.js            (생성)
+        5. /nodebird-call/views/error.pug   (생성)
+        6. /nodebird-call/.env              (생성)
+            1) nodebird-api에서 발급받은 clientSecret를 .env에 넣기
+        7. /nodebird-call/routes/index.js   (생성)
+            1) axios의 get & post
+                - get
+                    ex) axios.get(주소, { headers: {헤더} })                    
+                    > 해당 주소에 헤더와 함께 GET 요청을 보내는 것.
+                - post
+                    ex) axios.post(주소, {데이터})
+                    > 해당 주소에 POST 요청을 보내면서 요청 본문에 데이터를 실어 보냄
+                - 응답결과는 await으로 받은 객체의 data 속성에 들어 있음.
+                    > result.data
+                    > tokenResult.data
+                        가 API 서버에서 보내주는 응답.
+        8. nodebird-api가 실행되어있는 상태에서 nodebird-call 실행 (콘솔 npm start)
+        9. http://localhost:8003/test 접속
+            1) 주의사항
+                - http://localhost:8002/
+                    API 서비스를 제공하는 nodebird-api 서버
+                - http://localhost:8003/test
+                    API 서비스를 사용하는 nodebird-call 서버
+        10. (1분 뒤) 9. 주소 재접속 실습
