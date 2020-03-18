@@ -26,11 +26,14 @@ router.post('/token', async (req, res) => {
             });
         }
         const token = jwt.sign({
+            // * 첫번째 인자: 토큰의 내용
             id: domain.user.id,
             nick: domain.user.nick,
-        }, process.env.JWT_SECRET, {
-            expiresIn: '1m',    // 1분
-            issuer: 'nodebird',
+        }, 
+        process.env.JWT_SECRET, // * 두번째 인자: 토큰의 비밀키
+        {   // * 세번째 인자: 토큰의 설정
+            expiresIn: '1m',    // 1분 (유효기간)
+            issuer: 'nodebird', // 발급자
         });
         return res.json({
             code: 200,
