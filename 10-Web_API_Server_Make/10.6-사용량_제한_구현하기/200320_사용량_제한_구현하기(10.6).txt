@@ -1,0 +1,7 @@
+* 사용량 제한 구현하기
+    + 프로젝트 파일 작업(실습) 순서 및 메모
+        1. 콘솔
+            1) nodebird-api에 설치
+                > npm i express-rate-limit
+        2. /nodebird-api/routes/middlewares.js      (수정)
+            1) apiLimiter 미들웨어 추가
