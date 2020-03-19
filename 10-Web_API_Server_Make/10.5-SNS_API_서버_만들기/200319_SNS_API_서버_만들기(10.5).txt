@@ -1,0 +1,8 @@
+* SNS API 서버 만들기
+    + 프로젝트 파일 작업 순서 및 메모
+        1. /nodebird-api/routes/v1.js           (수정 : nodebird-api)
+            - 내가 올린 포스트, 해시태그 검색 결과를 가져오는 라우터 생성
+                > 이렇게 사용자에게 제공해도 되는 정보를 API로 만들면 됨.
+        2. /nodebird-call/routes/index.js       (수정 : nodebird-call)
+            - 사용하는 측에서는 위의 API를 이용하는 코드를 추가함.
+                토큰 발급받는 부분이 반복되므로 이를 함수로 만들어 재사용.
