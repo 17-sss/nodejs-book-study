@@ -5,3 +5,10 @@
                 > npm i express-rate-limit
         2. /nodebird-api/routes/middlewares.js      (수정)
             1) apiLimiter 미들웨어 추가
+        3. /nodebird-api/routes/v2.js               (생성)
+        4. /nodebird-api/routes/v1.js               (수정)
+            1) 기존 v1 라우터를 사용할 시 경고 메세지를 띄우기위해
+                deprecated 미들웨어 추가
+        5. /nodebird-api/app.js                     (수정)
+            1) v2 라우터를 사용하기위해 수정
+        6. /nodebird-call/routes/index.js            (수정)

@@ -13,6 +13,7 @@ const passportConfig = require('./passport');
 const authRouter = require('./routes/auth'); 
 const indexRouter = require('./routes');
 const v1 = require('./routes/v1');  // [10.3]
+const v2 = require('./routes/v2');  // [10.6]
 
 const app = express();
 sequelize.sync(); 
@@ -44,6 +45,8 @@ app.use(passport.initialize());
 app.use(passport.session());    
 
 app.use('/v1', v1); // [10.3]
+app.use('/v2', v2); // [10.6]
+
 app.use('/auth', authRouter);
 app.use('/', indexRouter);
 

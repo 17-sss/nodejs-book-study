@@ -4,7 +4,8 @@ const axios = require('axios');
 
 const router = express.Router();
 
-const URL = 'http://localhost:8002/v1'; 
+// const URL = 'http://localhost:8002/v1';  // [10.5]
+const URL = 'http://localhost:8002/v2';     // [10.6]
 
 axios.defaults.headers.origin = 'http://localhost:8003';  
 
