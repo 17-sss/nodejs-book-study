@@ -1,0 +1,8 @@
+* CORS 이해하기
+    + [10.6]에서 nodebird-call이 nodebird-api를 호출하는 것은 서버에서 서버로 API를 호출한 것
+    
+    + 만약 nodebird-call의 프런트에서 nodebird-api의 서버 API를 호출하면?
+    (프로젝트 파일 작업(실습) 순서 및 메모)
+        1. /nodebird-call/routes/index.js       (수정)
+        2. /nodebird-call/views/main.pug        (생성)
+
