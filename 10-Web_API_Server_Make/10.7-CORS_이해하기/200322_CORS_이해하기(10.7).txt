@@ -5,4 +5,34 @@
     (프로젝트 파일 작업(실습) 순서 및 메모)
         1. /nodebird-call/routes/index.js       (수정)
         2. /nodebird-call/views/main.pug        (생성)
+            1) Access-Control-Allow-Origin은 헤더가 없다는 내용의 에러
+            2) 요청을 보내는 클라이언트 (nodebrid-call (8003))과
+                요청을 받는 서버 (nodebrid-api (8002))의 도메인이 다름.
+                이 문제를 CORS(Cross-Origin Resource Sharing) 문제라고 부름
+                - CORS 문제를 해결하기 위해서는 응답 헤더에 Access-Control-Allow-Origin 헤더를
+                    넣어주어야함.
+                - 이 프로젝트에선 응답 헤더를 조작하려면 nodebird-call이 아닌 nodebird-api에서 바꿔야.
+                    (응답은 서버가 보내는 것이기에)
+        3. 콘솔
+            > cd /nodebird-api
+            > npm i cors
+        4.  /nodebird-api/routes/v2.js        (수정)
+            1) cors를 적용하고 http://localhost:8003 접속하면 잘 접속은 되나,
+                응답 헤더를 보면 Access-Control-Allow-Origin이 * 로 되어있음.
+                ( *는 모든 클라이언트 요청을 허용한다는 뜻 )
+            2) 하지만 다른 문제가 생김. 
+                - 요청을 보내는 주제가 클라이언트라 비밀키(process.env.CLIENT_SECRET)가 모두에게 노출
+                - CORS 요청도 허용했기에 이 비밀키로 다른 도메인들이 API 서버에 요청을 보낼 수 있음
+        5.  /nodebird-api/routes/v2.js        (수정)    (4. 에서 일어난 문제를 해결하기 위한 수정, 비밀키 발급 시 허용한 도메인을 적게함.)        
+            1) cors({origin: req.get('origin')})(req, res, next); 
+                - (req, res, next) 인자를 직접 주어 호출. 
+                    이 방법은 미들웨어의 작동 방식을 커스터마이징하고 싶을 때 하는 방법
+                ▼ 코드와 같다 보면 됨
+                ------------------------------------------------
+                |    router.use(cors());                       |
+                |                                              |
+                |   router.use((req, res, next) => {           |
+                |        cors()(req, res, next);               |
+                |    })                                        |
+                ------------------------------------------------
 

@@ -1,11 +1,40 @@
 // [10.6]
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');   // [10.7 : 4] 
+const url = require('url'); // [10.7 : 5]
 
 const { verifyToken, apiLimiter } = require('./middlewares');
 const { Domain, User, Post, Hashtag } = require('../models');
 
 const router = express.Router();
+
+// router.use(cors());     // [10.7 : 4]
+// [10.7 : 5] START
+router.use(async (req, res, next) => {
+    const domain = await Domain.find({
+        where: { host: url.parse(req.get('origin')).host },
+    });
+    if (domain) {
+        cors({origin: req.get('origin')})(req, res, next); 
+        /* 
+            + cors({origin: req.get('origin')})(req, res, next); 
+                - (req, res, next) 인자를 직접 주어 호출. 
+                    이 방법은 미들웨어의 작동 방식을 커스터마이징하고 싶을 때 하는 방법
+                ▼ 코드와 같다 보면 됨
+                ------------------------------------------------
+                |    router.use(cors());                       |
+                |                                              |
+                |   router.use((req, res, next) => {           |
+                |        cors()(req, res, next);               |
+                |    })                                        |
+                ------------------------------------------------
+        */
+    } else {
+        next();
+    }
+});
+// [10.7 : 5] END
 
 router.post('/token', apiLimiter, async (req, res) => {
     const { clientSecret } = req.body;
