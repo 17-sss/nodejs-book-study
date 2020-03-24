@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');   // [10.7 : 4] 
 const url = require('url'); // [10.7 : 5]
 
-const { verifyToken, apiLimiter } = require('./middlewares');
+const { verifyToken, apiLimiter, premiumApiLimiter } = require('./middlewares');
 const { Domain, User, Post, Hashtag } = require('../models');
 
 const router = express.Router();
@@ -36,17 +36,41 @@ router.use(async (req, res, next) => {
 });
 // [10.7 : 5] END
 
-router.post('/token', apiLimiter, async (req, res) => {
+// [10.8.1] START -------------------------------------------------------
+// 2. 무료인 도메인과 프리미엄 도메인 간 사용량 제한 다르게 적용하기
+/* 
+    ++ 이 구간 수정하기 전에
+        router.post('/token', apiLimiter, async (req, res) => {..} 
+        이런 식으로 apiLimiter 미들웨어가 라우터에 적용되어 있었음 
+
+        이 구간을 수정함으로써, 모든 라우터에 걸려있던 미들웨어 apiLimiter를 제거하고
+        Domain의 type을 확인 후 값에 해당하는 미들웨어를 use 함
+        (apiLimiter OR premiumApiLimiter)
+*/
+router.use(async (req, res, next) => {
+    const domain = await Domain.find({
+        where: { host: url.parse(req.get('origin')).host  },
+    });
+
+    if (domain.type === 'free') {
+        apiLimiter(req, res, next);
+    } else {
+        premiumApiLimiter(req, res, next);
+    }
+});
+// [10.8.1] END -------------------------------------------------------
+
+
+router.post('/token', async (req, res) => {
     const { clientSecret } = req.body;
     try {
         const domain = await Domain.find({
-            where: { clientSecret },
+            where: { clientSecret: clientSecret },  // [10.8.1] - 3 START
             include: {
                 model: User,
                 attribute: ['nick', 'id'],
             },
         });
-
         if(!domain) {
             return res.status(401).json({
                 code: 401,
@@ -77,7 +101,7 @@ router.post('/token', apiLimiter, async (req, res) => {
     }
 });
 
-router.get('/test', verifyToken, apiLimiter, (req, res) => {
+router.get('/test', verifyToken, (req, res) => {
     res.json(req.decoded);
 });
 
@@ -99,7 +123,7 @@ router.get('/posts/my', apiLimiter, verifyToken, (req, res) => {
         });
 });
 
-router.get('/posts/hashtag/:title', verifyToken, apiLimiter, async(req, res) => {
+router.get('/posts/hashtag/:title', verifyToken, async(req, res) => {
     try {
         const hashtag = await Hashtag.find({ where: {title: req.params.title} });
         if(!hashtag) {
@@ -122,5 +146,54 @@ router.get('/posts/hashtag/:title', verifyToken, apiLimiter, async(req, res) => 
         });
     }
 });
+
+// [10.8.1] START -------------------------------------------------------
+// 1. 팔로워나 팔로잉 목록을 가져오는 API 만들기
+router.get('/follow/:opt', verifyToken, async (req, res, next) => {
+    try {
+        const opt = req.params.opt;
+        if (opt !== 'friend' && opt !== 'me') {
+            return res.status(404).json({
+                code: 404,
+                message: '잘못된 요청입니다.',
+            });
+        }
+
+        const user = await User.find({where: {id: req.decoded.id},});
+        if (!user) {
+            return res.status(404).json({
+                code: 404,
+                message: '기준이 되는 유저의 정보가 없습니다.',
+            });
+        } 
+        
+        let follow;
+
+        if (opt === 'me') {
+            follow = await user.getFollowers();
+        } else if (opt === 'friend') {
+            follow = await user.getFollowings();            
+        }
+
+        if (!follow) {    
+            return res.status(404).json({
+                code: 404,
+                message: '정보를 가져올 수 없습니다.',
+            });
+        } else {
+            return res.status(200).json({
+                code: 200,
+                payload: follow,
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            code: 500,
+            message: '서버 에러',
+        });
+    }
+});
+// [10.8.1] END -------------------------------------------------------
 
 module.exports = router;

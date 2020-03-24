@@ -26,6 +26,10 @@ const request = async(req, api) => {
     console.error(error);
 
     if (error.response.status < 500) {  // 410이나 419처럼 의도된 에러면 발생
+    // [10.8.1] : 3-1 START
+      delete req.session.jwt;
+      request(req, api);
+    // [10.8.1] : 3-1 END
       return error.response;
     }
     throw error;
@@ -58,8 +62,36 @@ router.get('/search/:hashtag', async (req, res, next) => {
 
 // [10.7] START
 router.get('/', (req, res) => {
-  res.render('main', { key: process.env.CLIENT_SECRET });
+  res.render('main', { key: process.env.CLIENT_SECRET }); // [10.8.1] - 3. 참고 (수정하진않음)
 });
 // [10.7] END
+
+// [10.8.1] START -------------------------------------------------------
+// 1. 팔로워나 팔로잉 목록을 가져오는 API 만들기
+router.get('/follower', async (req, res, next) => {
+  try {
+    const result = await request(req, '/follow/me');
+    res.json(result.data);
+  } catch (error) {
+    if (error.code) {
+      console.error(error);
+      next(error);
+    }
+  }
+});
+
+router.get('/following', async (req, res, next) => {
+  try {
+    const result = await request(req, '/follow/friend');
+    res.json(result.data);
+  } catch (error) {
+    if (error.code) {
+      console.error(error);
+      next(error);
+    }
+  }
+});
+
+// [10.8.1] END -------------------------------------------------------
 
 module.exports = router;

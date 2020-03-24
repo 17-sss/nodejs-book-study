@@ -51,10 +51,25 @@ exports.apiLimiter = new RateLimit({
     handler(req, res) {
         res.status(this.statusCode).json({
             code: this.statusCode, // 기본값 429
-            message: '1분에 한 번만 요청할 수 있습니다.',
+            message: '무료 사용자는 1분에 한 번만 요청할 수 있습니다.',
         });
     },
 });
+
+// [10.8.1] START -------------------------------------------------------
+// 2. 무료인 도메인과 프리미엄 도메인 간 사용량 제한 다르게 적용하기
+exports.premiumApiLimiter = new RateLimit({
+    windowMs: 60 * 1000,    // 1분
+    max: 1000,  // 허용횟수 (windowMs 동안에 기재된 시간동안 허용횟수, 즉 1분에 1000번 가능)
+    delayMs: 0, // 호출간격
+    handler(req, res) {
+        res.status(this.statusCode).json({
+            code: this.statusCode, // 기본값 429
+            message: '유료 사용자는 1분에 1000번만 요청할 수 있습니다.',
+        });
+    },
+});
+// [10.8.1] END -------------------------------------------------------
 
 // deprecated 미들웨어(메소드)는 사용하면 안되는 라우터에 붙일 것임.
 exports.deprecated = (req, res) => {

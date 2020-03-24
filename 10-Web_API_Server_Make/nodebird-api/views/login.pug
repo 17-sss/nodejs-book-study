@@ -28,13 +28,18 @@ html
         tr
           th 도메인 주소
           th 타입
+          //- [10.8.1] - 3 START
+          //- 서버간의 통신이 이루어지는 서버 비밀키 
+          th 서버 비밀키          
+          //- 프론트에서 표시되어도 되는 비밀키 (프론트 to 프론트)
           th 클라이언트 비밀키
         for domain in user.domains
           tr
             td= domain.host
             td= domain.type
+            td= domain.serverSecret
             td= domain.clientSecret
-
+            //- [10.8.1] - 3 END
     else
       form#login-form(action='/auth/login' method='post')
         h2 NodeBird 계정으로 로그인하세요.

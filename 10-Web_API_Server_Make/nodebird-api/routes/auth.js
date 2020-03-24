@@ -108,9 +108,6 @@ router.get('/kakao/callback', passport.authenticate('kakao', {
 }), (req, res) => {
     res.redirect('/');      // 로그인 성공시
 });
-
-
-
 // [9.3.2 (카카오)] END
 
 module.exports = router;

@@ -1,0 +1,22 @@
+* 스스로 해보기
+    + 프로젝트 파일 작업 순서 및 메모
+        1. 팔로워나 팔로잉 목록을 가져오는 API 만들기 (nodebird-api에 새로운 라우터 추가) 
+            1) /nodebird-api/routes/v2.js               (수정)
+            2) /nodebird-call/routes/index.js           (수정)
+        2. 무료인 도메인과 프리미엄 도메인 간 사용량 제한 다르게 적용하기
+        (apiLimiter를 두 개 만들어서 도메인별로 다르게 적용. 9.3.1절의 POST /auth/login 라우터 참조)
+            1) /nodebird-api/routes/middlewares.js      (수정)
+                - 프리미엄 API LIMIT 생성 (미들웨어)
+            2) /nodebird-api/routes/v2.js               (수정)
+                - 무료와 유료를 구분한 뒤, 조건에 따른 제한(apiLimiter) 적용
+        3. 클라이언트용과 서버용 비밀키를 구분해서 발급하기(Domain 모델 수정)
+            - 서버에서는 serverSecret으로 인증
+            - 프론트에서는 clientSecret으로 인증
+            1) /nodebird-api/views/login.pug            (수정)
+            2) /nodebird-api/models/domains.js          (수정)
+            3) /nodebird-api/routes/index.js            (참고)
+            4) /nodebird-call/views/main.pug            (참고)
+            5) /nodebird-call/.env                      (수정)
+            6) /nodebird-api/routes/v2.js               (수정)
+        3-1. 번외, 토큰 만료시 재발급
+            1) /nodebird-call/routes/index.js           (수정)

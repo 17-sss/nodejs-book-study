@@ -9,10 +9,17 @@ module.exports = (sequelize, DataTypes) => (
             type: DataTypes.STRING(10),
             allowNull: false,
         },
-        clientSecret: {
+        // [10.8.1] START
+        //  3. 클라이언트용과 서버용 비밀키를 구분해서 발급하기
+        serverSecret: {
             type: DataTypes.STRING(40),
             allowNull: false,
         },
+        clientSecret: {
+            type: DataTypes.STRING(40),
+            allowNull: false,
+        },   
+        // [10.8.1] END
     }, {
         validate: {
             unknownType() {
