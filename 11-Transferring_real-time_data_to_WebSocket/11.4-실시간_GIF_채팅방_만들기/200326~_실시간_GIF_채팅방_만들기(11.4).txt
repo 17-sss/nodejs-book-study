@@ -1,0 +1,10 @@
+* 실시간 GIF 채팅방 만들기
+    + 메모
+        1. 이미지를 업로드하고 서버에 HTTP 요청을 할 것이므로 multer와 axios를 같이 설치
+        2. color-hash 모듈은 랜덤 색상을 구현해주는 모듈 (사용자의 이름을 랜덤 색상으로 구별하기 위해)
+    + 프로젝트 파일 작업 순서
+        1. 콘솔 (cmd > cd gif-chat)
+            > npm i mongoose multer axios color-hash
+        2. /gif-chat/schemas/room.js    (생성)  (채팅방 스키마)
+        3. /gif-chat/schemas/chat.js    (생성)  (채팅 스키마)
+
