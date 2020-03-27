@@ -3,8 +3,29 @@
         1. 이미지를 업로드하고 서버에 HTTP 요청을 할 것이므로 multer와 axios를 같이 설치
         2. color-hash 모듈은 랜덤 색상을 구현해주는 모듈 (사용자의 이름을 랜덤 색상으로 구별하기 위해)
     + 프로젝트 파일 작업 순서
-        1. 콘솔 (cmd > cd gif-chat)
+        01. 콘솔 (cmd > cd gif-chat)
             > npm i mongoose multer axios color-hash
-        2. /gif-chat/schemas/room.js    (생성)  (채팅방 스키마)
-        3. /gif-chat/schemas/chat.js    (생성)  (채팅 스키마)
+        02. /gif-chat/schemas/room.js        (생성)  (채팅방 스키마)
+        03. /gif-chat/schemas/chat.js        (생성)  (채팅 스키마)
+        04. /gif-chat/schemas/index.js       (생성)  (몽고디비와 연결하는 코드)
+        05. /gif-chat/.env                   (수정)  (몽고디비 관련 키 추가)
+            1) 몽고디비에 연결 시 필요한 아이디, 패스워드를 .env 파일로 빼내어 저장
+        06. /gif-chat/app.js                 (수정)  (서버와 몽구스 연결)
+        07. /gif-chat/views/error.pug        (생성)  (에러 페이지)
+        08. /gif-chat/views/layout.pug       (생성)  (레이아웃)
+        09. /gif-chat/public/main.css        (생성)  
+        10. /gif-chat/public/main.pug        (생성)  (메인화면 뷰)
+        11. /gif-chat/views/room.pug         (생성)  (채팅방 생성 화면 뷰)
+        12. /gif-chat/views/chat.pug         (생성)  (채팅방 화면 담당 뷰)
+        13. /gif-chat/socket.js              (새로 생성))  (/room, /chat 웹 소켓 이벤트 연결)
+            1) Socket.IO에는 네임스페이스보다 더 세부적인 개념으로 방(room)이라는 것이 있음
+                - 같은 네임스페이스 안에서도 같은 방에 들어 있는 소켓끼리만 데이터를 주고받을 수 있음
+                - join메서드와 leave메서드는 방의 아이디를 인자로 받음.
+                    > socket.request.headers.referer를 통해 
+                        현재 웹 페이지의 URL을 가져올 수 있고, URL에서 방 아이디 부분을 추출함
+        14. /gif-chat/app.js                 (수정)  (ColorHash 적용 및 유저 구분 관련)
+        15. /gif-chat/app.js                 (수정)  (입장 시 시스템 메세지 출력 및 0명일 때 방 제거)
+            1) app.js와 socket.js 간의 express-session 미들웨어를 공유하기 위해 변수로 분리
+        16. /gif-chat/socket.js              (수정)  (socket에 express-session 적용)
+            *** 작업해야함. 200327_1736_메모
 

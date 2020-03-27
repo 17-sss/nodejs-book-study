@@ -1,0 +1,75 @@
+//- [11.4] (채팅방 화면 담당 뷰)
+extends layout
+
+block content
+    h1= title
+    a#exit-btn(htef='/') 방 나가기
+    fieldset
+        legend 채팅 내용
+        #chat-list
+            //- 채팅 메세지는 세가지로 구분
+                1) 메세지(mine)
+                2) 시스템 메세지(system)
+                3) 남의 메세지(other)
+                ==> 메세지 종류에 따라 메세지 디자인이 달라짐
+            for chat in chats
+                if chat.user === user
+                    .mine(style='color:'+chat.user)
+                        div= chat.user
+                        if chat.gif
+                            img(src='/gif/'+chat.gif)
+                        else
+                            div= chat.chat
+                else if chat.user === 'system'
+                    .system
+                        div= chat.chat
+                else
+                    .other(style='color:'+chat.user)
+                        div= chat.user
+                        if chat.gif
+                            img(src='/gif/'+chat.gif)
+                        else
+                            div= chat.chat
+    form#chat-form(action='/chat' method='post' enctype='multipart/form-data')
+        label(for='gif') GIF 올리기
+        input#gif(type='file' name='gif' accept='image/gif')
+        input#chat(name='chat')
+        button(type='submit') 전송
+    
+    script(src='/socket.io/socket.io.js')
+    script.
+        /* 
+            여기선 네임스페이스가 /chat     main.pug와는 다름. 
+                /room 네임스페이스로 보낸 데이터는 당연히 받을 수 없고
+                /chat 네임스페이스로 보낸 데이터만 받을 수 있음
+        */
+        var socket = io.connect('http://localhost:8005/chat', {
+            path: '/socket.io'
+        });
+
+
+        /* 
+            join과 exit 이벤트 리스너는 각각 사용자 입장과 퇴장에 
+            관한 데이터가 웹 소켓으로 전송될 때 호출 됨        
+        */
+        socket.on('join', (data) => {
+            var div = document.createElement('div');
+            div.classList.add('system');
+
+            var chat = document.createElement('div');
+            div.textContent = data.chat;
+
+            div.appendChild(chat);
+            document.querySelector('#chat-list').appendChild(div);
+        });
+
+        socket.on('exit', (data) => {
+            var div = document.createElement('div');
+            div.classList.add('system');
+
+            var chat = document.createElement('div');
+            div.textContent = data.chat;
+
+            div.appendChild(chat);
+            document.querySelector('#chat-list').appendChild(div);
+        });
