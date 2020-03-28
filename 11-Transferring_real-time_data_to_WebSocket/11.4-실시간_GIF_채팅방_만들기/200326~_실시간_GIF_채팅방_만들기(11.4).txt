@@ -17,7 +17,7 @@
         10. /gif-chat/public/main.pug        (생성)  (메인화면 뷰)
         11. /gif-chat/views/room.pug         (생성)  (채팅방 생성 화면 뷰)
         12. /gif-chat/views/chat.pug         (생성)  (채팅방 화면 담당 뷰)
-        13. /gif-chat/socket.js              (새로 생성))  (/room, /chat 웹 소켓 이벤트 연결)
+        13. /gif-chat/socket.js              (새로 생성)  (/room, /chat 웹 소켓 이벤트 연결)
             1) Socket.IO에는 네임스페이스보다 더 세부적인 개념으로 방(room)이라는 것이 있음
                 - 같은 네임스페이스 안에서도 같은 방에 들어 있는 소켓끼리만 데이터를 주고받을 수 있음
                 - join메서드와 leave메서드는 방의 아이디를 인자로 받음.
@@ -27,5 +27,6 @@
         15. /gif-chat/app.js                 (수정)  (입장 시 시스템 메세지 출력 및 0명일 때 방 제거)
             1) app.js와 socket.js 간의 express-session 미들웨어를 공유하기 위해 변수로 분리
         16. /gif-chat/socket.js              (수정)  (socket에 express-session 적용)
-            *** 작업해야함. 200327_1736_메모
-
+        17. /gif-chat/routes/index.js        (생성, 11.4용)
+        Final. 실행
+            - 몽고디비, 서버를 실행한 후. 브라우저 두개 띄워놓고 localhost:8005에 접속.
