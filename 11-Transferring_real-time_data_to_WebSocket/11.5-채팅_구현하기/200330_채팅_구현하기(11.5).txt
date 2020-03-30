@@ -1,0 +1,21 @@
+* 채팅 구현하기
+    + 프로젝트 파일 작업 순서
+        01. /gif-chat/views/chat.pug        (수정)  (이벤트 리스너 추가)
+            - 프론트에서는 서버에서 보내는 채팅 데이터를 받을 소켓 이벤트 리스너가 필요.
+        02. /gif-chat/routes/index.js       (수정) 
+            - 01, 02를 작업하면 채팅 가능. 
+            채팅 할 때마다 채팅 내용이 POST /room/:id/chat 라우터로 전송되고 라우터에서 다시 웹 소켓으로 메시지 보냄    
+        Note. 라우터를 거치지 않고 채팅 구현 (웹 소켓만으로 채팅 구현)
+            1) /gif-chat/views/chat.pug        (수정)
+            2) /gif-chat/app.js                (수정)
+
+
+    + 메모
+        01. pug에서 #{room_.id}나 #{user}는 pug에서 서버 데이터를 스크립트에 문자열로 렌더링하는 부분
+        02. 기타 Socket.IO API
+            1) 특정인에게 메세지 보내기
+                socket.to(소켓 아이디).emit(이벤트, 데이터);
+            2). 나를 제외한 전체에게 메세지 보내기
+                socket.broadcast.emit(이벤트, 데이터);
+                socket.broadcast.to(방 아이디).emit(이벤트, 데이터)
+        

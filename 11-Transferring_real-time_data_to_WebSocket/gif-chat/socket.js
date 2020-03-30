@@ -79,5 +79,14 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
             }
             // [11.4 : 16.] (socket에 express-session 적용) END --
         });
+
+
+        // [11.5 : Note_2)] 라우터를 거치지 않고 채팅 구현 (웹 소켓만으로 채팅 구현) START
+        /*
+        socket.on('chat', (data) => {
+            socket.to(data.room).emit(data);
+        });
+        */
+        // [11.5 : Note_2)] 라우터를 거치지 않고 채팅 구현 (웹 소켓만으로 채팅 구현) END
     });
 };

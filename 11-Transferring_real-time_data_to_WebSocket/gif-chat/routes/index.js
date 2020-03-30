@@ -1,6 +1,12 @@
 // [11.4 : 17.] (생성)
 const express = require('express');
 
+// [11.6 : 02.] (GIF 이미지 전송 구현) START
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+// [11.6 : 02.] (GIF 이미지 전송 구현) END
+
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
 
@@ -73,10 +79,18 @@ router.get('/room/:id', async (req, res, next) => { // 2
             req.flash('roomError', '허용인원이 초과하였습니다.');
             return res.redirect('/');
         }
+
+        const chats = await Chat.find({room: room._id}).sort('createdAt'); // [11.5 : 02.] 
+        /* 
+            [11.5 : 02.] 방 접속 시 기존 채팅내역을 불러옴.
+            방 접속 시에는 DB로부터 채팅 내역을 가져오고, 접속 후에는 웹 소켓으로 새로운 채팅 메세지를 받음
+        */
+
         return res.render('chat', {
             room,
             title: room.title,
-            chats: [],
+            // chats: [],
+            chats, // [11.5 : 02.] 
             user: req.session.color,
         });
     } catch (error) {
@@ -100,5 +114,68 @@ router.delete('/room/:id', async(req, res, next) => {   // 3
         next(error);
     }
 });
+
+// [11.5 : 02.] START 
+// + chat.pug의 전송 버튼을 누르면 작동.
+router.post('/room/:id/chat', async (req, res, next) => {
+    try {   
+        // 1) 채팅을 데이터 베이스에 저장한 후..
+        const chat = new Chat({
+            room: req.params.id,
+            user: req.session.color,
+            chat: req.body.chat,
+        });
+        await chat.save();
+
+        // 2) io.of('/chat').to(방 아이디).emit으로 같은 방에 들어 있는 소켓들에게 메시지 데이터를 전송
+        req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+        res.send('OK');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+// [11.5 : 02.] END
+
+// [11.6 : 02.] (GIF 이미지 전송 구현) START
+fs.readdir('uploads', (error) => {
+    if (error) {
+        console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+        fs.mkdirSync('uploads');
+    }
+});
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, cb) {
+            cb(null, 'uploads/');
+        },
+        filename(req, file, cb) {
+            const ext = path.extname(file.originalname);
+            cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
+        },
+    }),
+    limits: {fileSize: 5 * 1024 *1024},
+});
+
+router.post('/room/:id/gif',  upload.single('gif'), async (req, res, next) => {
+    try {
+        const chat = new Chat({
+            room: req.params.id,
+            user: req.session.color,
+            gif: req.file.filename,
+        });
+
+        await chat.save();
+
+        req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+        res.send('ok');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+// [11.6 : 02.] (GIF 이미지 전송 구현) END
+
 
 module.exports = router;

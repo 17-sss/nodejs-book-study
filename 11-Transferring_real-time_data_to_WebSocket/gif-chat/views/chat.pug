@@ -3,7 +3,7 @@ extends layout
 
 block content
     h1= title
-    a#exit-btn(htef='/') 방 나가기
+    a#exit-btn(href='/') 방 나가기
     fieldset
         legend 채팅 내용
         #chat-list
@@ -73,3 +73,86 @@ block content
             div.appendChild(chat);
             document.querySelector('#chat-list').appendChild(div);
         });
+
+        // [11.5 : 01.] (프론트에서는 서버에서 보내는 채팅 데이터를 받을 소켓 이벤트 리스너가 필요함) START        
+        socket.on('chat', (data) => {   //- chat은 채팅 메세지가 웹 소켓으로 전송될때 호출
+            var div = document.createElement('div');
+
+            if (data.user === '#{user}') {
+                div.classList.add('mine');
+            } else {
+                div.classList.add('other');
+            }
+
+            var name = document.createElement('div');
+            name.textContent = data.user;
+            div.appendChild(name);
+
+            if (data.chat) {
+                var chat = document.createElement('div');
+                chat.textContent = data.chat;
+                div.appendChild(chat);
+            } else {
+                var gif = document.createElement('img');
+                gif.src = '/gif/' + data.gif;
+                div.appendChild(gif);
+            }
+            div.style.color = data.user;
+            document.querySelector('#chat-list').appendChild(div);
+        });
+
+        document.querySelector('#chat-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if(e.target.chat.value) {
+                // [11.5 : Note_1)] 라우터를 거치지 않고 채팅 구현 (웹 소켓만으로 채팅 구현) START
+                /*                
+                socket.emit('chat', {
+                    room: '#{room._id}',
+                    user: '#{user}',
+                    chat: e.target.chat.value,
+                });
+
+                e.target.chat.value = '';
+                */
+                // [11.5 : Note_1)] 라우터를 거치지 않고 채팅 구현 (웹 소켓만으로 채팅 구현) END
+
+                // 기존, 라우터 거치며 채팅 구현.
+                var xhr = new XMLHttpRequest();
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        e.target.chat.value = '';
+                    } else {
+                        console.error(xhr.responseText);
+                    }
+                };
+                xhr.open('POST', '/room/#{room._id}/chat');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    chat: this.chat.value,
+                }));
+            }
+        });
+        // [11.5 : 01.] (프론트에서는 서버에서 보내는 채팅 데이터를 받을 소켓 이벤트 리스너가 필요함) END
+
+
+        // [11.6 : 01.] (GIF 이미지 전송 구현) START
+        document.querySelector('#gif').addEventListener('change', (e) => {
+            var formData = new FormData();
+            var xhr = new XMLHttpRequest();
+            console.log(e.target.files);
+            formData.append('gif', e.target.files[0]);
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    e.target.file = null;
+                } else {
+                    console.error(xhr.responseText);
+                }
+            };
+
+            xhr.open('POST', '/room/#{room._id}/gif');
+            xhr.send(formData);
+        });
+        // [11.6 : 01.] (GIF 이미지 전송 구현) END
+

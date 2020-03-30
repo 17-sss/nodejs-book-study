@@ -1,0 +1,5 @@
+* 프로젝트 마무리하기
+    + 프로젝트 파일 작업 순서
+        01. /gif-chat/views/chat.pug    (수정)  (GIF 이미지 전송 구현)
+        02. /gif-chat/routes/index.js   (수정)  (GIF 이미지 전송 구현, 라우터)
+        03. /gif-chat/app.js            (수정)  (GIF 이미지 전송 구현, uploads 폴더 지정)
