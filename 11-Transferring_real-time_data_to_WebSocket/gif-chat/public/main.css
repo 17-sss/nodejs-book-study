@@ -67,3 +67,7 @@ table, table tn, table td {
     border: 1px solid silver;
     border-collapse: collapse;
 }
+
+#border-r {
+    border-right: 1px solid;
+}

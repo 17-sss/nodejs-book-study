@@ -185,4 +185,33 @@ router.post('/room/:id/gif',  upload.single('gif'), async (req, res, next) => {
 });
 // [11.6 : 02.] (GIF 이미지 전송 구현) END
 
+
+//- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) START
+router.post('/room/:id/sys', async(req, res, next) => {
+    try {
+        const chat = req.body.type === 'join'
+            ? `${req.session.color}님이 입장하셨습니다.`
+            : `${req.session.color}님이 퇴장하셨습니다.`;
+        const sys = new Chat({
+            room: req.params.id,
+            user: 'system',
+            chat,
+        });
+
+        await sys.save();
+
+        req.app.get('io').of('/chat').to(req.params.id).emit(req.body.type, {
+            user: 'system',
+            chat,
+            number: req.app.get('io').of('/chat').adapter.rooms[req.params.id].length,
+        });
+        res.send('ok');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+//- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) END
+
+
 module.exports = router;

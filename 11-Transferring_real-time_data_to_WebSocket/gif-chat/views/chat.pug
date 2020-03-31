@@ -4,6 +4,10 @@ extends layout
 block content
     h1= title
     a#exit-btn(href='/') 방 나가기
+    //- [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기) START
+    #number 참여자 수:&nbsp;
+        #number-count= number
+    //- [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기) END
     fieldset
         legend 채팅 내용
         #chat-list
@@ -47,12 +51,23 @@ block content
             path: '/socket.io'
         });
 
-
         /* 
             join과 exit 이벤트 리스너는 각각 사용자 입장과 퇴장에 
             관한 데이터가 웹 소켓으로 전송될 때 호출 됨        
         */
         socket.on('join', (data) => {
+            //- [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기) START ---
+            /* 
+                [ME MEMO]
+                - 이 부분은 socket.js이랑 연결되어있음. 
+                    socket.js에서 emit 했기에
+                - 여기서 data 변수는 
+                    socket.js의 socket.to(roomId).emit('join', {객체}) 에서
+                    {객체} 임.
+            */
+            document.querySelector('#number-count').textContent = data.number;              
+            //- [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기) END ---
+
             var div = document.createElement('div');
             div.classList.add('system');
 
@@ -64,6 +79,10 @@ block content
         });
 
         socket.on('exit', (data) => {
+            //- [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기)
+            document.querySelector('#number-count').textContent = data.number; 
+            // --
+
             var div = document.createElement('div');
             div.classList.add('system');
 

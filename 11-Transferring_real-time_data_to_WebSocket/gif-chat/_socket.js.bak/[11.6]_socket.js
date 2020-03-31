@@ -53,9 +53,6 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
                 // [ME] emit: 이벤트를 다른쪽으로 전달. 여기선 'join'이벤트로 전달. chat.pug에 있음.
                 user: 'system',
                 chat: `${req.session.color}님이 입장하셨습니다.`,
-
-                // [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기)
-                number: socket.adapter.rooms[roomId].length,    
             });
             // [11.4 : 16.] (socket에 express-session 적용) END --
 
@@ -79,9 +76,6 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
                 socket.to(roomId).emit('exit', {
                     user: 'system',
                     chat: `${req.session.color}님이 퇴장하셨습니다.`,
-
-                    // [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기)
-                    number: socket.adapter.rooms[roomId].length,    
                 });
             }
             // [11.4 : 16.] (socket에 express-session 적용) END --

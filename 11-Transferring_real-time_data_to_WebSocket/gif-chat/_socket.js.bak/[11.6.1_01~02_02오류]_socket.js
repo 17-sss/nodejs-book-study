@@ -1,6 +1,8 @@
 // [11.4] (/room, /chat 웹 소켓 이벤트 연결)
 const SocketIO = require('socket.io');
 const axios = require('axios');     // [11.4 : 16.] (socket에 express-session 적용)
+const cookieParser = require('cookie-parser');  // [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기)
+const cookie = require('cookie-signature');     // [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기)
 
 module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMiddleware 추가
     const io = SocketIO(server, {path: '/socket.io'});  
@@ -46,7 +48,10 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
             .replace(/\?.+/,'');
         
             socket.join(roomId);    // 채팅방에 들어가는 메서드 (접속 시)
-            
+
+            //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) [작업을 위해 주석처리] START
+            /*  
+
             // [11.4 : 16.] (socket에 express-session 적용) START --
             //- socket.to(방 아이디): 특정방에 데이터를 보냄
             socket.to(roomId).emit('join', {    
@@ -58,6 +63,20 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
                 number: socket.adapter.rooms[roomId].length,    
             });
             // [11.4 : 16.] (socket에 express-session 적용) END --
+            */
+           //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) [작업을 위해 주석처리] END
+
+
+           //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) START
+            axios.post(`http://localhost:8005/room/${roomId}/sys`, {
+                type: 'join',   // [ME] 시점이 socket의 join 이벤트 발생시인듯?
+            }, {
+                headers: {
+                    // [ME] 암호화된 쿠키 connect (유저 중복을 막기위해 cookie-signature 적용)
+                    Cookie: `connect.sid=${'s%3A' + cookie.sign(req.signedCookies['connect.sid'], process.env.COOKIE_SECRET)}`,
+                },  
+            });
+           //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) END
 
         socket.on('disconnect', () => {
             console.log('chat 네임스페이스 접속 해제');
@@ -76,6 +95,8 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
                         console.error(error);
                     });
             } else {    // 남은 참여자가 0명이 아니면, 누가 나갔는지 퇴장했다는 데이터를 보냄
+                /*
+                //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) [작업을 위해 주석처리] START
                 socket.to(roomId).emit('exit', {
                     user: 'system',
                     chat: `${req.session.color}님이 퇴장하셨습니다.`,
@@ -83,6 +104,19 @@ module.exports = (server, app, sessionMiddleware) => { // [11.4 : 16.] sessionMi
                     // [11.6.1 : 01.] (채팅방에 현재 참여자 수나 목록 표시하기)
                     number: socket.adapter.rooms[roomId].length,    
                 });
+                //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) [작업을 위해 주석처리] END ----
+                */
+
+                //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) START
+                axios.post(`http://localhost:8005/room/${roomId}/sys`, {
+                    type: 'exit',
+                }, {
+                    headers: {
+                        // 암호화된 쿠키 connect.sid
+                        Cookie: `connect.sid=${'s%3A' + cookie.sign(req.signedCookies['connect.sid'], process.env.COOKIE_SECRET)}`,
+                    },
+                });
+                //- [11.6.1 : 02.] (시스템 메시지까지 DB에 저장하기) END
             }
             // [11.4 : 16.] (socket에 express-session 적용) END --
         });
