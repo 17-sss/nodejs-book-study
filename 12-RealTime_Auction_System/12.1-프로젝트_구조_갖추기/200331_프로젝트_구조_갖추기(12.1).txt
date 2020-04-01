@@ -1,0 +1,39 @@
+* 프로젝트 구조 갖추기 (12.1)
+    + 프로젝트 파일 작업 순서 및 메모
+        01. /node-auction/package.json  (생성)
+            1) 콘솔
+                > npm i
+        02. sequelize, mysql 설치
+            1) 콘솔
+                > npm i -g sequelize-cli
+                > npm i sequelize mysql2
+                > sequelize init
+        03. /node-auction/models
+                /user.js    (생성)
+                /good.js    (생성)
+                /auction.js (생성)
+        04. /node-auction/config/config.json    (수정)  (모델을 데이터베이스 및 서버와 연결)
+        05. 데이터베이스 생성
+            1) 콘솔
+                > sequelize db:create
+        06. /node-auction/models/index.js   (수정)
+        07. passport 설치
+            1) 콘솔
+                > npm i passport passport-local bcrypt
+        08. /node-auction/passport
+                /localStrategy.js   (생성)
+                /index.js           (생성)
+        09. /node-auction/routes
+                /auth.js            (생성)
+                /middlewares.js     (생성)
+        10. /node-auction/.env      (생성)
+        11. /node-auction/app.js    (생성)
+        12. /node-auction/views
+                /error.pug      (생성)
+                /layout.pug     (생성)
+                /main.pug       (생성)
+                /join.pug       (생성)
+                /good.pug       (생성)
+        13. /node-auction/public/main.css   (생성)
+        14. /node-auction/routes/index.js   (생성)
+        

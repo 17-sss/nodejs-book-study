@@ -1,0 +1,3 @@
+* 참고
+https://okky.kr/article/375844
+https://github.com/DefinitelyTyped/DefinitelyTyped
