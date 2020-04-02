@@ -1,4 +1,0 @@
-- MySQL
-    cd "c:\Program Files\MySQL\MySQL Server 8.0\bin\
-- MongoDB
-    cd "C:\Program Files\MongoDB\Server\4.2\bin\

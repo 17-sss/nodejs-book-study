@@ -1,4 +1,4 @@
-//- [12.1]
+//- [12.1 : 12.]
 extends layout
 
 block content
@@ -18,3 +18,31 @@ block content
           td= good.price
           td.time(data-start=good.createdAt) 00:00:00
           td: a.enter.btn(href='/good/' + good.id) 입장
+
+  //- [12.2 : 05.]  (IE, 엣지에서 지원 가능하게 수정) START ---
+
+  //- 1. EventSource Polyfill: IE와 엣지도 서버센트 이벤트를 사용할 수 있게 만듬
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/event-source-polyfill/0.0.9/eventsource.min.js')
+
+  //- 2. EventSource를 사용하여 서버센트 이벤트를 받는 코드
+  script.
+    var es = new EventSource('/sse'); // 서버와 연결
+    
+    // es.onmessage 나 es.addEventListener('message') 이벤트 리스너로 서버로부터 데이터를 받을 수 있음.
+    es.onmessage = function (e) { 
+     document.querySelectorAll('.time').forEach(function(td) {
+        var end = new Date(td.dataset.start);
+        var server = new Date(parseInt(e.data, 10));  // e.data: 서버로부터 받은데이터
+        end.setDate(end.getDate() + 1);
+        if (server >= end) {
+          return td.textContent = '00:00:00';
+        } else {
+          var t = end - server;
+          var seconds = ('0' + Math.floor((t / 1000) % 60)).slice(-2);
+          var minutes = ('0' + Math.floor((t / 1000 / 60) % 60)).slice(-2);
+          var hours = ('0' + Math.floor((t / (1000 * 60 * 60)) % 24)).slice(-2);
+          return td.textContent = hours + ':' + minutes + ':' + seconds ;
+        }
+      });
+    };
+    //- [12.2 : 05.]  (IE, 엣지에서 지원 가능하게 수정) END ---

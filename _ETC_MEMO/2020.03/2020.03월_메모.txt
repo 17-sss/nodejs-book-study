@@ -1,0 +1,36 @@
+* 2020.03.09
+    + MySQL 3306 에러시..   
+        01. cmd 
+            1) net start [MySQL 서버명]
+            ex)
+                net start mysql80
+
+
+* 2020.03.27    
+    + .env
+        - 이 파일은 공개적으로 올릴 때 꼭 제외하기. 보안관련한 키들이 전부 들어있음.
+
+    ☆ DB 비번들    (어차피 연습용이라 보여도 됨)
+        01. 몽고디비
+            1) 회사
+                ID: test      
+                PW: 1234
+        02. MySql
+            1) 회사
+                ID: root
+                PW: 0000
+
+
+* 2020.03.30
+    + async / await 관련 링크
+        01. 자바스크립트 비동기 처리와 콜백 함수
+            https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/
+        02. 자바스크립트 Promise 쉽게 이해하기
+            https://joshua1988.github.io/web-development/javascript/promise-for-beginners/
+        03. 자바스크립트 async와 await
+            https://joshua1988.github.io/web-development/javascript/js-async-await/
+
+
+* 2020.03.31
+    + Node.js의 이벤트 관련 설명 링크
+        https://kgh940525.tistory.com/entry/nodejs이벤트-이해하기

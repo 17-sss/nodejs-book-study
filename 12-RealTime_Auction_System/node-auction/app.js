@@ -13,6 +13,11 @@ const authRouter = require('./routes/auth');
 const {sequelize} = require('./models');
 const passportConfig = require('./passport');
 
+// [12.2 : 02.] (SSE, Socket.IO 모듈 연결) START
+const sse = require('./sse');
+const websocket = require('./socket');
+// [12.2 : 02.] (SSE, Socket.IO 모듈 연결) END
+
 const app = express();
 sequelize.sync();
 passportConfig(passport);
@@ -58,7 +63,12 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트에서 대기중');
     console.log('ADDRESS:', 'http://localhost:' + app.get('port'));
 });
+
+// [12.2 : 02.] (SSE, Socket.IO 모듈 연결) START
+websocket(server, app);
+sse(server);
+// [12.2 : 02.] (SSE, Socket.IO 모듈 연결) END

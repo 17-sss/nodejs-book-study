@@ -1,0 +1,15 @@
+* 2020.04.01
+    + VS CODE 자동완성 참고 링크
+        https://okky.kr/article/375844
+        https://github.com/DefinitelyTyped/DefinitelyTyped
+
+
+* 2020.04.02
+    + 시퀄라이즈 버전별 확인된 문제
+        01. 현재 확인 된 사항
+            1) 시퀄라이즈 버전이 5 이상일 경우, find 메서드 안먹힘.
+                - 4버전까진 가능. 5 이상일 경우엔 findOne 사용하기.
+                    > 왠만하면 4버전 사용하길... 오류많더라. 이 책에서 사용하기엔
+
+    + exports, require 등 설명 링크
+        https://medium.com/@chullino/require-exports-module-exports-공식문서로-이해하기-1d024ec5aca3

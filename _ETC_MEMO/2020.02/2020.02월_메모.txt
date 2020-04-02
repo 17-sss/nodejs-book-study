@@ -1,0 +1,33 @@
+* 2020.02.10
+    + 이스케이프란?
+        - 특정 문자를 HTML로 변환하는 행위를 Escape(이스케이프)라 함
+
+    + HTML 엔티티 (html에 <, & 등 표현하고 싶을 때 사용)
+        <:          &lt;
+        >:          &gt;
+        &:          &amp;
+        띄어쓰기:    &nbsp;
+        ":          &quot;
+        ':          &apos;  
+
+
+* 2020.02.11
+    + MySQL, MongoDB의 정의
+        01. MySQL
+            - MySQL은 SQL언어를 사용하는 관계형 데이터베이스 관리시스템의 대표 주자
+        02. MongoDB
+            - MongoDB는 NoSQL의 대표 주자
+
+
+* 2020.02.13
+    + MySQL MUL, UKI, PKI KEY 관련 설명 링크
+        https://m.blog.naver.com/kshkyc/220366433383
+
+
+* 2020.02.23
+    + MySQL, MongoDB 경로 (cmd에서 실행시)
+        01. MySQL
+            cd "c:\Program Files\MySQL\MySQL Server 8.0\bin\
+        02. MongoDB
+            cd "C:\Program Files\MongoDB\Server\4.2\bin\
+    
