@@ -36,7 +36,7 @@ block content
             var xhr = new XMLHttpRequest();
             var errorMessage = document.querySelector('.error-message');
             
-            xhr.onload = function () {
+            xhr.onload = () => {
                 if (xhr.status === 200) {
                     e.target.bid.value = '';
                     e.target.msg.value = '';
@@ -55,54 +55,48 @@ block content
                 bid: e.target.bid.value,
                 msg: e.target.msg.value,
             }));
-        });     
-        /**
-            블록 스코프 잘볼것... 지금 ▲ 줄에 있는 })  이게.. 맨밑에 감싸져있었더니 
-            여러 번 입찰 메세지가 나오는 마술이..
-        */
-    
-        var es = new EventSource('/sse');
-        var time = document.querySelector('#time');
-        
-        es.onmessage = function (e) {
-            var end = new Date(time.dataset.start);
-            var server = new Date(parseInt(e.data, 10));
-            end.setDate(end.getDate() + 1);
 
-            if (server >= end) {
-                return time.textContent = '00:00:00';
-            } else {
-                var t = end - server;
-                var seconds = ('0' + Math.floor((t / 1000) % 60)).slice(-2);
-                var minutes = ('0' + Math.floor((t / 1000 / 60) % 60)).slice(-2);
-                var hours = ('0' + Math.floor((t / (1000 * 60 * 60)) % 24)).slice(-2);
+            var es = new EventSource('/sse');
+            var time = document.querySelector('#time');
+            es.onmessage = function (e) {
+                var end = new Date(time.dataset.start);
+                var server = new Date(parseInt(e.data, 10));
+                end.setDate(end.getDate() + 1);
 
-                return time.textContent = hours + ':' + minutes + ':' + seconds;
-            }
-        };
+                if (server >= end) {
+                    return time.textContent = '00:00:00';
+                } else {
+                    var t = end - server;
+                    var seconds = ('0' + Math.floor((t / 1000) % 60)).slice(-2);
+                    var minutes = ('0' + Math.floor((t / 1000 / 60) % 60)).slice(-2);
+                    var hours = ('0' + Math.floor((t / (1000 * 60 * 60)) % 24)).slice(-2);
 
-        var socket = io.connect('http://localhost:8010', {
-            path: '/socket.io'
-        });
+                    return time.textContent = hours + ':' + minutes + ':' + seconds;
+                }
+            };
 
-        socket.on('bid', function (data) {
-            var div = document.createElement('div');
-            var span = document.createElement('span');
-            span.textContent = data.nick + '님';
-            
-            var strong = document.createElement('strong');
-            strong.textContent = data.bid +'원에 입찰하셨습니다.';
+            var socket = io.connect('http://localhost:8010', {
+                path: '/socket.io'
+            });
 
-            div.appendChild(span);
-            div.appendChild(strong);
+            socket.on('bid', function (data) {
+                var div = document.createElement('div');
+                var span = document.createElement('span');
+                span.textContent = data.nick + '님';
+                
+                var strong = document.createElement('strong');
+                strong.textContent = data.bid +'원에 입찰하셨습니다.';
 
-            if (data.msg) {
-                span = document.createElement('span');
-                span.textContent='('+ data.msg + ')';
                 div.appendChild(span);
-            }
+                div.appendChild(strong);
 
-            document.querySelector('#bid').appendChild(div);
+                if (data.msg) {
+                    span = document.createElement('span');
+                    span.textContent='('+ data.msg + ')';
+                    div.appendChild(span);
+                }
+
+                document.querySelector('#bid').appendChild(div);
+            });
         });
-
 

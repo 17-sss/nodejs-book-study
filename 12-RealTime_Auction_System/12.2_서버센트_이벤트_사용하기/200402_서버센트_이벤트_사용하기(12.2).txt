@@ -27,7 +27,3 @@
                         이 프로젝트에선 클라이언트 코드에 EventSource polyfill을 넣어줌.
         06. /node-auction/views/auction.pug     (생성)
         07. /node-auction/routes/index.js       (수정)  (good(상품)관련 라우터 2개 추가)
-            +) 아직 미완. 이부분 다시 테스트하기.
-                입찰하면......무슨 분신술함..
-                
-

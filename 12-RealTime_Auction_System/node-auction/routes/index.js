@@ -3,8 +3,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const schedule = require('node-schedule');  // [12.3 : 02] 
 
-const { Good, Auction, User } = require('../models');
+
+const { Good, Auction, User, sequelize } = require('../models'); // [12.3 : 02] /sequelize 추가
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -18,7 +20,7 @@ router.use((req, res, next) => {
     next();
 });
 
-// GET * 메인화면
+// GET : / * 메인화면
 router.get('/', async(req, res, next) => {
     try {
         // soldId가 낙찰자의 아이디이므로 낙찰자가 null이면 경매가 진행 중인것.
@@ -34,7 +36,7 @@ router.get('/', async(req, res, next) => {
     }
 });
 
-// GET * 회원가입
+// GET : /join * 회원가입
 router.get('/join', isNotLoggedIn, (req, res) => {
     res.render('join', {
         title: '회원가입 - NodeAuction',
@@ -42,7 +44,7 @@ router.get('/join', isNotLoggedIn, (req, res) => {
     });
 });
 
-// GET * 상품 등록
+// GET : /good * 상품 등록
 router.get('/good', isLoggedIn, (req, res) => {
     res.render('good', {title: '상품 등록 - NodeAuction'});
 });
@@ -67,16 +69,47 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 *1024 },
 });
 
-// POST * 업로드한 상품을 처리하는 라우터
+// POST : /good * 업로드한 상품을 처리하는 라우터
 router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => {
     try {
         const { name, price } = req.body;
-        await Good.create({
+        const good =  await Good.create({   // [12.3 : 02] / 변수화
             ownerId: req.user.id,
             name,
             img: req.file.filename,
             price,
         });
+
+        // [12.3 : 02] START
+        const end = new Date();
+        end.setDate(end.getDate() + 1); // 하루 뒤
+
+        // 일정을 예약하는 메서드: schedulejob(실행될 시각, 해당 시간이 되었을 때 수행할 콜백)
+        schedule.scheduleJob(end, async() => {
+
+            // 1) 경매 모델에서 가장 높은 입찰을 한 사람을 찾고
+            const success = await Auction.find({
+                where: {goodId: good.id},
+                order: [[
+                    'bid', 'DESC'
+                ]],
+            });
+            // 2) 상품 모델의 낙찰자 아이디에 넣어주도록 정의.
+            await Good.update({soldId: success.userId}, { where: {id: good.id} });
+
+            // 3) 낙찰자의 보유자산을 낙찰 금액만큼 뺌.
+            await User.update({
+                /* 
+                    +컬럼: sequelize.literal(컬럼-숫자)
+                        시퀄라이즈에서 해당 컬럼의 숫자를 줄이는 방법
+                        (숫자를 늘리려면 - 대신 +로)
+                */
+                money: sequelize.literal(`money - ${success.bid}`),
+            }, {
+                where: { id: success.userId },
+            });
+        });
+        // [12.3 : 02] END
 
         res.redirect('/');
     } catch(error) { 
@@ -87,6 +120,7 @@ router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => 
 
 
 // [12.2 : 07.] (good(상품)관련 라우터 2개 추가) START ---
+// GET : /good/:id * 해당(id) 상품과 기존 입찰 정보들을 불러온뒤 렌더링하는 라우터
 router.get('/good/:id', isLoggedIn, async (req, res, next) => {
     try {
         const [good, auction] = await Promise.all([
@@ -95,6 +129,11 @@ router.get('/good/:id', isLoggedIn, async (req, res, next) => {
                 include: {
                     model: User,
                     as: 'owner',
+                    /* 
+                        + Good 모델에 User 모델을 include할 때 as 속성을 사용한것에 주의.
+                            - Good 모델과 User 모델은 현재 일대다 관계가 두번 연결(owner, sold)
+                            되어 있으므로 이런 경우에는 어떤 관계를 include할지 as 속성으로 밝혀주어야.
+                    */
                 },
             }),
             Auction.findAll({
@@ -116,6 +155,7 @@ router.get('/good/:id', isLoggedIn, async (req, res, next) => {
     }
 });
 
+// POST : /good/:id/bid * 클라이언트로부터 받은 입찰 정보를 저장
 router.post('/good/:id/bid', isLoggedIn, async (req, res, next) => {
     try {
         const { bid, msg } = req.body;

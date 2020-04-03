@@ -17,10 +17,12 @@ const passportConfig = require('./passport');
 const sse = require('./sse');
 const websocket = require('./socket');
 // [12.2 : 02.] (SSE, Socket.IO 모듈 연결) END
+const checkAuction = require('./checkAuction'); // [12.3 : 03-2.]
 
 const app = express();
 sequelize.sync();
 passportConfig(passport);
+checkAuction(); // [12.3 : 03-2.]
 
 const sessionMiddleware = session({
     resave: false,
