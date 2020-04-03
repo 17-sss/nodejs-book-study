@@ -10,10 +10,9 @@ module.exports = async () => {
         const targets = await Good.findAll({
             where: {
                 soldId: null,
-                createdAt: {  $lte: yesterday },
+                createdAt: { $lte: yesterday },
             },
         });
-
         targets.forEach(async (target) => {
             const success = await Auction.find({
                 where: {goodId: target.id},

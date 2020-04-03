@@ -142,6 +142,12 @@ router.get('/good/:id', isLoggedIn, async (req, res, next) => {
                 order: [['bid', 'ASC']],
             }),
         ]);
+        /*
+        // [12.4.1 : 01.] (상품 등록자는 참여할 수 없게 만들기 : 보류
+        if (good.ownerId === req.user.id) {
+            return res.status(403).send('자신이 등록한 상품은 입찰할 수 없습니다.');    
+        }
+        */
 
         res.render('auction', {
             title: `${good.name} - NodeAuction`,
@@ -200,5 +206,39 @@ router.post('/good/:id/bid', isLoggedIn, async (req, res, next) => {
     }
 });
 // [12.2 : 07.] (good(상품)관련 라우터 2개 추가) END ---
+
+// [12.4 : 01.] (낙찰자가 낙찰 내역 볼 수 있게 작업) START ---
+router.get('/list', isLoggedIn, async(req, res, next) => {
+    try {
+        const goods = await Good.findAll({
+            where: { soldId: req.user.id },
+            include: { model: Auction },
+            order: [[{model: Auction }, 'bid', 'DESC']],
+        });
+
+        res.render('list', {title: '낙찰 목록 - NodeAuction', goods});
+    } catch (error) {
+        console.error(error);
+        next(error);
+    } 
+});
+// [12.4 : 01.] (낙찰자가 낙찰 내역 볼 수 있게 작업) END ---
+
+
+// 200403_TEST!
+router.get('/test', isLoggedIn, async (req, res, next) => {
+    try {
+        const goods = await Good.find({where: {ownerId: req.user.id}});
+        console.log('===========');
+        console.log(goods);
+        res.render('test', {title: 'TEST'});    
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+    
+});
+// ------ TEST
+
 
 module.exports = router;
