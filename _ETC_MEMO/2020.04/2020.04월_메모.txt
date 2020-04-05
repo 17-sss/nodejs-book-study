@@ -13,3 +13,10 @@
 
     + exports, require 등 설명 링크
         https://medium.com/@chullino/require-exports-module-exports-공식문서로-이해하기-1d024ec5aca3
+
+
+* 2020.04.05
+    + MySQL 외래키 무시하고 삭제하고 싶을 때.
+        > SET foreign_key_checks = 0;
+        > drop table [없앨 테이블명];
+        > SET foreign_key_checks = 1;

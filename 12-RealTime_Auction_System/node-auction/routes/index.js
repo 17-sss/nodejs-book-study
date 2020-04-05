@@ -72,7 +72,7 @@ const upload = multer({
 // POST : /good * 업로드한 상품을 처리하는 라우터
 router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => {
     try {
-        const { name, price } = req.body;
+        const { name, price } = req.body;         
         const good =  await Good.create({   // [12.3 : 02] / 변수화
             ownerId: req.user.id,
             name,
@@ -81,8 +81,17 @@ router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => 
         });
 
         // [12.3 : 02] START
-        const end = new Date();
-        end.setDate(end.getDate() + 1); // 하루 뒤
+        const end = new Date();        
+        let { timeHour, timeMin } = req.body; // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) / timeHour, timeMin 추가
+        // end.setDate(end.getDate() + 1); // 하루 뒤
+
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) START
+        timeHour = parseInt(timeHour);
+        timeMin = parseInt(timeMin);
+        end.setHours(end.getHours() + timeHour);
+        end.setMinutes(end.getMinutes() + timeMin);
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) END
+        
 
         // 일정을 예약하는 메서드: schedulejob(실행될 시각, 해당 시간이 되었을 때 수행할 콜백)
         schedule.scheduleJob(end, async() => {
@@ -94,6 +103,7 @@ router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => 
                     'bid', 'DESC'
                 ]],
             });
+
             // 2) 상품 모델의 낙찰자 아이디에 넣어주도록 정의.
             await Good.update({soldId: success.userId}, { where: {id: good.id} });
 
@@ -142,12 +152,6 @@ router.get('/good/:id', isLoggedIn, async (req, res, next) => {
                 order: [['bid', 'ASC']],
             }),
         ]);
-        /*
-        // [12.4.1 : 01.] (상품 등록자는 참여할 수 없게 만들기 : 보류
-        if (good.ownerId === req.user.id) {
-            return res.status(403).send('자신이 등록한 상품은 입찰할 수 없습니다.');    
-        }
-        */
 
         res.render('auction', {
             title: `${good.name} - NodeAuction`,
@@ -184,6 +188,12 @@ router.post('/good/:id/bid', isLoggedIn, async (req, res, next) => {
         if (good.auctions[0] && good.auctions[0].bid >= bid) {
             return res.status(403).send('이전 입찰가보다 높아야 합니다');
         }
+
+        // [12.4.1 : 01] (상품 등록자는 입찰 불가) START --
+        if (good.ownerId === req.user.id) {
+            return res.status(403).send('자신이 등록한 상품은 입찰할 수 없습니다.');
+        }
+        // [12.4.1 : 01] (상품 등록자는 입찰 불가) END ---
 
         const result = await Auction.create({
             bid,
@@ -226,7 +236,16 @@ router.get('/list', isLoggedIn, async(req, res, next) => {
 
 
 // 200403_TEST!
-router.get('/test', isLoggedIn, async (req, res, next) => {
+router.get('/test', async (req, res, next) => {
+    const end = new Date();
+    console.log(end);
+    end.setHours(end.getHours() - 1);
+    console.log(end);
+    
+    res.render('test', {title: 'TEST'});   
+    
+    
+    /*
     try {
         const goods = await Good.find({where: {ownerId: req.user.id}});
         console.log('===========');
@@ -236,6 +255,7 @@ router.get('/test', isLoggedIn, async (req, res, next) => {
         console.error(error);
         next(error);
     }
+    */
     
 });
 // ------ TEST

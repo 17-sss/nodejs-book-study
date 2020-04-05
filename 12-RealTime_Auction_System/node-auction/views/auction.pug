@@ -31,7 +31,7 @@ block content
             서버센트 이벤트 데이터로 서버 시간을 받아 카운트다운을 하는 것,
             다른 사람이 입찰했을 때 Socket.IO로 입찰정보를 렌더링하는 것으로 이루어져 있음.
     script.
-        document.querySelector('#bid-form') .addEventListener('submit', function (e) {
+        document.querySelector('#bid-form').addEventListener('submit', function (e) {
             e.preventDefault();
             var xhr = new XMLHttpRequest();
             var errorMessage = document.querySelector('.error-message');

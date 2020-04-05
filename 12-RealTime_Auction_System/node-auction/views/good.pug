@@ -14,4 +14,79 @@ block content
       .input-group
         label(for='good-price') 시작 가격
         input#good-price(type='number' name='price' required)
+
+      //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) START ==        
+      .input-group
+        p(style='text-align: center') 제한 시간 지정
+      div
+        p 시간 
+          input#good-timeHour(name='timeHour' required)
+        p 분
+          input#good-timeMin(name='timeMin' required)
+      //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) END ==
+
       button#join-btn.btn(type='submit') 상품 등록
+
+  //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) START ==
+  script.
+    var timeHour = document.getElementById('good-timeHour');
+
+    timeHour.addEventListener('change', (event) => {
+      var timeValue = timeHour.value;
+
+      if (isNaN(timeValue)) {
+        timeValue = timeValue.replace(/[^0~9]/gi, '');        
+        /* 
+          // 소대문자 무시한채로, a~z(A~Z)제거 & ㄱ~ㅎ 제거
+          timeValue = timeValue.replace(/[a~z]|[ㄱ~ㅎ]|/gi, '');
+          //- 참고
+            1) https://elena90.tistory.com/entry/JavaScript-자바스크립트에서-replace-를-replaceAll-처럼-사용하여-모든-문자-바꾸기-feat정규식
+            2) https://devesim.tistory.com/55
+        */        
+      }   
+      timeValue = parseInt(timeValue);
+
+      if (1 > timeValue) {
+        timeValue = 1;
+      } else if ((24 < timeValue) || (24 == timeValue)) {
+        if (timeMin.value > 0) {
+          timeValue = 23;
+        } else {
+          timeValue = 24;  
+        } 
+      } else if (isNaN(timeValue)) {
+        timeValue = 1;  
+      }
+
+      timeHour.value = timeValue; 
+    });
+
+
+    var timeMin = document.getElementById('good-timeMin');
+    
+    timeMin.addEventListener('change', (event) => {
+      var timeValue = timeMin.value;
+
+      if (isNaN(timeValue)) {
+        timeValue = timeValue.replace(/[^0~9]/gi, '');        
+      }   
+      timeValue = parseInt(timeValue);
+
+      if (0 > timeValue) {
+        timeValue = 0;
+      } else if (59 < timeValue) {
+        if (timeHour.value == 24) {
+          timeValue = 0;
+        } else {
+          timeValue = 59;
+        }        
+      } else if (isNaN(timeValue)) {
+        timeValue = 0;  
+      }
+
+      timeMin.value = timeValue; 
+    });
+
+  //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) END ==
+
+  
