@@ -72,26 +72,30 @@ const upload = multer({
 // POST : /good * 업로드한 상품을 처리하는 라우터
 router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => {
     try {
-        const { name, price } = req.body;         
+        const { name, price } = req.body;     
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) START  ===  
+        let { timeHour, timeMin } = req.body; 
+        timeHour = parseInt(timeHour);
+        timeMin = parseInt(timeMin);
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
+
         const good =  await Good.create({   // [12.3 : 02] / 변수화
             ownerId: req.user.id,
             name,
             img: req.file.filename,
-            price,
+            price,        
+            timeHour,
+            timeMin,   
         });
-
-        // [12.3 : 02] START
+        
+        // [12.3 : 02] START 
         const end = new Date();        
-        let { timeHour, timeMin } = req.body; // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) / timeHour, timeMin 추가
         // end.setDate(end.getDate() + 1); // 하루 뒤
-
-        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) START
-        timeHour = parseInt(timeHour);
-        timeMin = parseInt(timeMin);
+        
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) START ===
         end.setHours(end.getHours() + timeHour);
         end.setMinutes(end.getMinutes() + timeMin);
-        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) END
-        
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
 
         // 일정을 예약하는 메서드: schedulejob(실행될 시각, 해당 시간이 되었을 때 수행할 콜백)
         schedule.scheduleJob(end, async() => {

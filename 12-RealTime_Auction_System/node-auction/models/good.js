@@ -14,6 +14,18 @@ module.exports = (sequelize, DataTypes) => (
             allowNull: false,
             defaultValue: 0,
         },
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) START ===
+        timeHour: { // 제한 시간 (시)
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1,
+        },
+        timeMin: {  // 제한 시간 (분)
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        }
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
     }, {
         timestamps: true,
         paranoid: true,

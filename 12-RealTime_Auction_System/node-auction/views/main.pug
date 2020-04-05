@@ -16,8 +16,13 @@ block content
           td= good.name
           td: img(src='/img/' + good.img)
           td= good.price
-          td.time(data-start=good.createdAt) 00:00:00
+          td
+            .time(data-start=good.createdAt) 00:00:00     
+            input.timeHour(type='hidden' value=good.timeHour)
+            input.timeMin(type='hidden' value=good.timeMin)
           td: a.enter.btn(href='/good/' + good.id) 입장
+
+          
 
   //- [12.2 : 05.]  (IE, 엣지에서 지원 가능하게 수정) START ---
 
@@ -29,11 +34,21 @@ block content
     var es = new EventSource('/sse'); // 서버와 연결
     
     // es.onmessage 나 es.addEventListener('message') 이벤트 리스너로 서버로부터 데이터를 받을 수 있음.
-    es.onmessage = function (e) { 
-     document.querySelectorAll('.time').forEach(function(td) {
+    es.onmessage = function (e) {     
+      document.querySelectorAll('.time').forEach(function(td) {
         var end = new Date(td.dataset.start);
         var server = new Date(parseInt(e.data, 10));  // e.data: 서버로부터 받은데이터
-        end.setDate(end.getDate() + 1);
+        
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) START ===
+        // 후 모르게싿....ㅠㅠㅠ
+        var timeHour = parseInt(document.querySelector('.timeHour').value);        
+        var timeMin = parseInt(document.querySelector('.timeMin').value);        
+        
+        end.setHours(end.getHours() + timeHour);
+        end.setMinutes(end.getMinutes() + timeMin);
+        // [12.4.1 : 02.] (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
+
+        // end.setDate(end.getDate() + 1);
         if (server >= end) {
           return td.textContent = '00:00:00';
         } else {
