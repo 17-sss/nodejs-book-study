@@ -24,6 +24,16 @@
                 - 시간을 지정하기 위한 필드 생성
             3) /node-auction/routes/index.js    (수정)
                 - 지정한 제한시간을 DB에 저장 및 불러오기
-            4) /node-auction/views/main.pug     (수정)
+            4) /node-auction/views
+                    /main.pug       (수정)
+                    /auction.pug    (수정)               
                 - DB에서 제한시간 관련한 데이터 가져온 뒤, 카운트 다운 조정
-                    ** 모르게따 ㅠㅠㅠ
+            5) /node-auction/checkAuction.js    (수정)      
+                - 각 제한 시간에 맞게 스케줄러도 조정.
+                - ME: 시퀄라이즈랑 기본 코딩(?)이랑 활용해서 만듬
+                    ▷ 어차피 코딩에 답은 없으니까.. 나중에 한번 이 부분 유튜브 풀이 보기
+        03. 노드 서버 꺼졌다 다시 켜졌을 때 스케줄러 다시 생성하기 (checkAuction에서 DB 조회 후 스케줄러 설정)
+
+        04. 아무도 입찰을 하지 않아 낙찰자가 없을 때 처리 로직 구현하기 (checkAuction과 스케줄러 수정)
+            1) /node-auction/checkAuction.js    (수정)
+                - 제한시간이 지나고 낙찰자가 없을 시, 해당 물품 삭제

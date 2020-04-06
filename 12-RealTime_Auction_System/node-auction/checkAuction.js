@@ -6,36 +6,40 @@ const { Good, Auction, User, sequelize, Sequelize: {Op} } = require('./models');
 module.exports = async () => {
     try {
         const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const targets = await Good.findAll({
-            where: {
-                soldId: null,
-                createdAt: { [Op.lte] : yesterday },    
-                /* 
-                    ** [12.4.1(txt) : 메모 - 1.]     (200405)
-                        | 교재($lte 사용시) 에서 나온대로 실습결과 <= 연산자가 되어야하는데 계속 = 연산자만 됨..
+    
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) START ===
+        const allGoods = await Good.findAll();
 
-                        1) 200214_시퀄라이즈_(7.6.4).txt 메모를 읽어본 결과,
-                            Sequelize 에서 Op 객체를 가져와서 연산자를 만들어야 함.
-                        2) [Op.lte]에서
-                            lte는 크거나 같다(createAt <= yesterday(지금시간에서 하루 전) )
-                */
-            },
+        allGoods.forEach(async (e, index) => {
+            let timeHour = parseInt(e.timeHour);
+            let timeMin = parseInt(e.timeMin);
+            let createdAt = e.createdAt;    
+            yesterday.setHours(yesterday.getHours() - timeHour);
+            yesterday.setMinutes(yesterday.getMinutes() - timeMin);
+
+            if (createdAt <= yesterday) {  
+                const success = await Auction.find({
+                    where: {goodId: e.id},
+                    order: [['bid', 'DESC']],
+                });
+
+                if (success !== null) {
+                    await Good.update({soldId: success.userId}, {where: {id:e.id}});
+                    await User.update({
+                        money: sequelize.literal(`money - ${success.bid}`),
+                    }, {
+                        where: {id: success.userId},
+                    });    
+                } else {
+                    // [12.4.1 : 04.]   (아무도 입찰을 하지 않아 낙찰자가 없을 때 처리 로직 구현하기) START ===                    
+                    await Good.destroy({
+                        where: {id: e.id}                        
+                    }); 
+                    // [12.4.1 : 04.]   (아무도 입찰을 하지 않아 낙찰자가 없을 때 처리 로직 구현하기) END ===
+                }                
+            }
         });
-
-        targets.forEach(async (target) => {
-            const success = await Auction.find({
-                where: {goodId: target.id},
-                order: [['bid', 'DESC']],
-            });
-
-            await Good.update({soldId: success.userId}, {where: {id:target.id}});
-            await User.update({
-                money: sequelize.literal(`money - ${success.bid}`),
-            }, {
-                where: {id: success.userId},
-            });
-        });
+        // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
     } catch (error) {
         console.error(error);
     }

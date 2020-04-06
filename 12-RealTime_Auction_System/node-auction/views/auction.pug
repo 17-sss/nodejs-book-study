@@ -7,6 +7,10 @@ block good
         div='시작가: ' + good.price + '원'
         strong#time(data-start=good.createdAt)
         img#good-img(src='/img/' + good.img)
+        //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) START ==
+        input.timeHour(type='hidden' value=good.timeHour)
+        input.timeMin(type='hidden' value=good.timeMin)
+        //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) END ==
 
 block content 
     .timeline
@@ -67,7 +71,15 @@ block content
         es.onmessage = function (e) {
             var end = new Date(time.dataset.start);
             var server = new Date(parseInt(e.data, 10));
-            end.setDate(end.getDate() + 1);
+
+            //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) START ==
+            var timeHour = parseInt(document.querySelector('.timeHour').value);
+            var timeMin = parseInt(document.querySelector('.timeMin').value);
+            end.setHours(end.getHours() + timeHour);
+            end.setMinutes(end.getMinutes() + timeMin);
+            //- [12.4.1 : 02.]  (경매 시간을 자유롭게 조정할 수 있게 만들기) END ==
+
+            //- end.setDate(end.getDate() + 1);
 
             if (server >= end) {
                 return time.textContent = '00:00:00';
