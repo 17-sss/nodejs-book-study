@@ -96,10 +96,10 @@ router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => 
         end.setHours(end.getHours() + timeHour);
         end.setMinutes(end.getMinutes() + timeMin);
         // [12.4.1 : 02.]   (경매 시간을 자유롭게 조정할 수 있게 만들기) END ===
+        
 
         // 일정을 예약하는 메서드: schedulejob(실행될 시각, 해당 시간이 되었을 때 수행할 콜백)
         schedule.scheduleJob(end, async() => {
-
             // 1) 경매 모델에서 가장 높은 입찰을 한 사람을 찾고
             const success = await Auction.find({
                 where: {goodId: good.id},
@@ -108,20 +108,32 @@ router.post('/good', isLoggedIn, upload.single('img'), async(req, res, next) => 
                 ]],
             });
 
-            // 2) 상품 모델의 낙찰자 아이디에 넣어주도록 정의.
-            await Good.update({soldId: success.userId}, { where: {id: good.id} });
+            // [12.4.1 : 04.] (아무도 입찰을 하지 않아 낙찰자가 없을 때 처리) [if ~ else문 추가]
+            if (success !== null) {             
+                if (good.soldId === null) {
+                    // 2) 상품 모델의 낙찰자 아이디에 넣어주도록 정의.
+                    await Good.update({soldId: success.userId}, { where: {id: good.id} });
+                    // 3) 낙찰자의 보유자산을 낙찰 금액만큼 뺌.
+                    await User.update({
+                        /* 
+                            +컬럼: sequelize.literal(컬럼-숫자)
+                                시퀄라이즈에서 해당 컬럼의 숫자를 줄이는 방법
+                                (숫자를 늘리려면 - 대신 +로)
+                        */
+                        money: sequelize.literal(`money - ${success.bid}`),
+                    }, {
+                        where: { id: success.userId },
+                    });    
+                }
+            } else {
+                const findGood = await Good.find({
+                    where: {id: good.id},
+                });
 
-            // 3) 낙찰자의 보유자산을 낙찰 금액만큼 뺌.
-            await User.update({
-                /* 
-                    +컬럼: sequelize.literal(컬럼-숫자)
-                        시퀄라이즈에서 해당 컬럼의 숫자를 줄이는 방법
-                        (숫자를 늘리려면 - 대신 +로)
-                */
-                money: sequelize.literal(`money - ${success.bid}`),
-            }, {
-                where: { id: success.userId },
-            });
+                if (findGood.deletedAt === null) {
+                    await Good.destroy({where: {id: good.id}}); // [12.4.1 : 04.] (아무도 입찰을 하지 않아 낙찰자가 없을 때 처리)                     
+                }                
+            }               
         });
         // [12.3 : 02] END
 

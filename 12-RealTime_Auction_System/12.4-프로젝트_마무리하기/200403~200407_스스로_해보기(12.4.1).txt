@@ -33,7 +33,12 @@
                 - ME: 시퀄라이즈랑 기본 코딩(?)이랑 활용해서 만듬
                     ▷ 어차피 코딩에 답은 없으니까.. 나중에 한번 이 부분 유튜브 풀이 보기
         03. 노드 서버 꺼졌다 다시 켜졌을 때 스케줄러 다시 생성하기 (checkAuction에서 DB 조회 후 스케줄러 설정)
-
+            1) /node-auction/checkAuction.js    (수정)
+                - 스케줄러 관련 로직 추가
+            2) /node-auction/app.js    (수정)
+                - checkAuction의 모든 메소드 등록
         04. 아무도 입찰을 하지 않아 낙찰자가 없을 때 처리 로직 구현하기 (checkAuction과 스케줄러 수정)
             1) /node-auction/checkAuction.js    (수정)
                 - 제한시간이 지나고 낙찰자가 없을 시, 해당 물품 삭제
+            2) /node-auction/routes/index.js    (수정)
+                - 상품 등록 시 스케줄러 설정할 때, 제한시간이 지나고 낙찰자가 없을 시, 해당 물품 삭제하는 로직 추가

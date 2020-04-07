@@ -17,12 +17,16 @@ const passportConfig = require('./passport');
 const sse = require('./sse');
 const websocket = require('./socket');
 // [12.2 : 02.] (SSE, Socket.IO 모듈 연결) END
+
 const checkAuction = require('./checkAuction'); // [12.3 : 03-2.]
 
 const app = express();
 sequelize.sync();
 passportConfig(passport);
-checkAuction(); // [12.3 : 03-2.]
+
+// checkAuction(); // [12.3 : 03-2.]
+checkAuction.checkTime();   // 기존의 경매 시간이 만료된 상품을 처리하는 로직 | checkAuction();과 같음
+checkAuction.createSchedule();    // [12.4.1 : 03.] (노드 서버 꺼졌다 다시 켜졌을 때 스케줄러 다시 생성)
 
 const sessionMiddleware = session({
     resave: false,
