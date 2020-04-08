@@ -1,0 +1,31 @@
+* Google Places API 사용하기
+    + 메모
+        01. Google API 관련 링크(참고)
+            - https://developers.google.com/maps/documentation/javascript/places?hl=ko
+            - https://console.cloud.google.com/project/_/apiui/apis/enabled?hl=ko&_ga=2.47423843.510571970.1586321505-1577539388.1586321505
+            - https://webnautes.tistory.com/1080
+        02. API 키 생성 방법
+            1) 구글 로그인 후, https://console.developers.google.com/apis/ 접속
+            2) '사용자 인증 정보' 탭 누른 후, 
+                상단의 '+ 사용자 인증 정보 만들기' 클릭 ▶ 'API 키' 클릭
+        03. 현 실습에 사용된 계정 및 API 정보
+            1) 계정
+                - x*****g93
+            2) API 키
+                AIzaSyAnxZNF0o6OVg1W_K0VO-ikdYTudmVger0     (env에 등록)
+
+    + 프로젝트 파일 작업 순서 및 메모
+        01. /node-place/.env    (수정)
+            - API키 등록
+        02. 콘솔
+            1) 구글에서 제공하는 노드를 위한 API 모듈 설치
+                > npm i @google/maps
+        03. /node-place/routes/index.js     (생성)  
+            - 메인화면, 검색어 자동완성, 장소 검색 라우터 생성
+        04. /node-place/views
+                /error.pug      (생성)
+                /layout.pug     (생성)
+                /index.pug      (생성)
+                /result.pug     (생성)
+            /node-place/public
+                /main.css       (생성)
