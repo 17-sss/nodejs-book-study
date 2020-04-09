@@ -1,3 +1,5 @@
 * Google Maps API 사용하기 (13.3)
     + 프로젝트 파일 작업 순서 및 메모
         01. /node-place/views/result.pug    (수정)
+            [!] 해본 결과, 구글 API 결제 계정 등록 필요...
+                13 목차는 코딩만하는걸로..ㅠ

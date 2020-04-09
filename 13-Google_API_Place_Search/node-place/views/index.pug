@@ -2,3 +2,43 @@
 extends layout 
 
 block content
+    //- [13.5 : 01.] START
+    h1 즐겨찾기
+    #map
+    script.
+        var positions = [];
+    for result in results
+        script.
+            positions.push({
+                lat: #{result.location[1]}, // 서버에서 역순으로 등록했기에 여기서도 역순
+                lng: #{result.location[0]},
+                name: '#{result.name}',
+                id: '#{result.placeId}'
+            });
+
+    script.
+        function initMap() {
+            var center = positions[0] || {lat: 37.540705, lng: 126.956764 };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: center
+            });
+
+            positions.forEach(function (pos) {
+                new google.map.Marker({
+                    position: { lat: pos.lat, lng: pos.lng },
+                    map: map,
+                    title: pos.name
+                });
+            });
+        }
+
+    script(
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js"
+        + "?key=AIzaSyDfW9ff5kn9l-g3Btz89hE_V5WMAHyyUGM&callback=initMap"
+    )
+    //- [13.5 : 01.] END
+
+    

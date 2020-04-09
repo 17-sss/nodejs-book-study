@@ -47,16 +47,55 @@ block content
                 // 3: 검색 결과가 있을 때 지도에 마커를 표시하는 방법
                 positions.forEach((pos) => {
                     // google.maps.Marker(옵션)으로 마커 표시할 수 있음.
-                    new google.maps.Marker({
+
+                    // [13.4 : 05.] google.maps.Marker 변수화
+                    var marker = new google.maps.Marker({   
                         position: {     // 마커를 표시할 위도와 경도를 가리킴
                             lat: pos.lat, lng: pos.lng 
                         },   
                         map: map,       // 마커를 표시할 지도
                         title: pos.name // 마커에 마우스를 올렸을 때 표시할 툴팁 메서지 설정
                     });
+
+                    // [13.4 : 05.] START ===
+                    var div = document.createElement('div');
+                    var h1 = document.createElement('h1');
+                    var button = document.createElement('button');
+                    h1.textContent = pos.name;      // pos.name: 장소명
+                    button.classList.add('btn');    
+                    button.textContnet = '즐겨찾기 추가';
+                    button.onclick = () => {
+                        var xhr = new XMLHttpRequest();
+                        xhr.onload = () => {
+                            if (xhr.status === 200) {
+                                location.href = '/';
+                            }
+                        };
+
+                        xhr.open('POST', '/location/' + pos.id + '/favorite');
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.send(JSON.stringify({
+                            name: pos.name,
+                            lat: pos.lat,
+                            lng: pos.lng
+                        }));
+                    };
+
+                    div.appendChild(h1);
+                    div.appendChild(button);
+
+                    // new google.maps.InfoWindow(옵션): 정보창을 띄우는 코드
+                        // 옵션으로는 content가 있음. 여기에 정보창 내용물을 넣으면 됨.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: div
+                    });
+                    marker.addListener('click', () => {
+                        infowindow.open(map, marker);
+                    });
+                    // [13.4 : 05.] END ===
                 });
             }
-
+        
         //- 4: 구글 지도 관련 스크립트를 불러오는 태그
             발급 받은 API 키 입력, initMap 콜백 함수 지정
 

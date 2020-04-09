@@ -1,0 +1,19 @@
+* 위치 기반 검색 수행하기 (13.4)
+    + 프로젝트 파일 작업 순서 및 메모
+        01. /node-place/views/layout.pug    (수정)
+            - #loc-search-btn 버튼 누를시, 내 위치 찾아 서버에 요청을 보내는 이벤트 추가
+        02. /node-place/routes/index.js     (수정)
+            - 내 위치 찾아 검색하는 기능 코딩
+            1) places, placesNear API의 type 목록 참고 링크
+                https://developers.google.com/places/web-service/supported_types
+        03. /node-place/views/layout.pug    (수정)
+            - 카페, 상점, 은행, 학교를 고를 수 있도록 선택 상자 추가
+        04. /node-place/routes/index.js     (수정)
+            - 03.에서 작업한 항목에 의해 "/search/:query" 라우터에 type 옵션 추가
+        05. /node-place/routes/result.pug   (수정)
+            - 마커를 눌렀을 때 즐겨찾기할 수 있도록 수정 
+                (마커를 눌렀을 때 정보창이 뜨도록 프런트엔드를 수정)
+        06. /node-place/routes/index.js     (수정)
+            - 즐겨찾기 추가를 위한 POST /location/:id/favorite 라우터 추가
+            
+            
