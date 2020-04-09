@@ -1,0 +1,3 @@
+* Google Maps API 사용하기 (13.3)
+    + 프로젝트 파일 작업 순서 및 메모
+        01. /node-place/views/result.pug    (수정)

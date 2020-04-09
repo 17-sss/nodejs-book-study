@@ -4,9 +4,66 @@ extends layout
 block content
     h1=query + '검색 결과(' + results.length + ')'
 
-    if results
-        for result in results
-            div= result.formatted_address
-            div= JSON.stringify(result.geometry.location)
-            div= result.place_id
-            duv= result.name
+    
+    //- [13.2] 결과 View (이부분 사용할거면 아래 코드 앞으로 당기기 (Shift + Tab))
+        if results        
+            for result in results
+                div= result.formatted_address
+                div= JSON.stringify(result.geometry.location)
+                div= result.place_id
+                div= result.name
+
+
+    //- [13.3] 결과 View    
+    //- 1: 서버가 pug에 검색 결과를 렌더링하는 부분.
+    #map
+    script.
+        // 검색 결과 개수 만큼 넣을 positions 배열 생성
+        var positions = [];          
+
+    for result in results       
+        script.
+            positions.push({
+                lat: #{result.geometry.location.lat},   // 위도
+                lng: #{result.geometry.location.lng},   // 경도
+                name: '#{result.name}',                 // 장소명
+                id: '#{result.place_id}'                // 장소 id
+            });
+        //- 1: END
+        script.
+            function initMap () {
+                //- 2: initMap 함수가 호출되면 new google.maps.Map(태그, 옵션)으로 지도를 렌더링.
+                var center = positions[0] || {lat: 37.540705, lng: 126.956764};
+                var map = new google.maps.Map(
+                    // 1) 태그: 지도를 렌더링할 태그를 가리킴.
+                    document.getElementById('map'), 
+                    {
+                        // 2) 옵션: 지도에 관한 설정
+                        zoom: 13,           // 지도의 확대 정도
+                        center: center,     // 지도의 중심 좌표 (검색 결과가 없다면 이 위치(서울시)가 반환됨.)
+                    }
+                );
+
+                // 3: 검색 결과가 있을 때 지도에 마커를 표시하는 방법
+                positions.forEach((pos) => {
+                    // google.maps.Marker(옵션)으로 마커 표시할 수 있음.
+                    new google.maps.Marker({
+                        position: {     // 마커를 표시할 위도와 경도를 가리킴
+                            lat: pos.lat, lng: pos.lng 
+                        },   
+                        map: map,       // 마커를 표시할 지도
+                        title: pos.name // 마커에 마우스를 올렸을 때 표시할 툴팁 메서지 설정
+                    });
+                });
+            }
+
+        //- 4: 구글 지도 관련 스크립트를 불러오는 태그
+            발급 받은 API 키 입력, initMap 콜백 함수 지정
+
+            > 지도 스크립트 로딩이 완료되면 initMap함수를 호출
+        script(
+            async
+            defer
+            src="https://maps.googleapis.com/maps/api/js"
+            + "?key=AIzaSyDfW9ff5kn9l-g3Btz89hE_V5WMAHyyUGM&callback=initMap"        
+        )
