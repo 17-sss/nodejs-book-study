@@ -1,0 +1,69 @@
+* CLI 프로그램 만들기 (14)
+    + 메모
+        01. node나 npm, nodemon처럼 콘솔에서 입력하여 어떠한 동작을 수행하는 문장을 콘솔 명령어라 부름.\
+        02. node나 npm 명령은 노드를 설치해야만 사용 가능하지만, 
+            nodemon이나, rimraf와 같은 명령어는 해당 패키지를 npm을 통해 전역(-g) 설치하면 
+            콘솔에서 명령어를 사용할 수 있었음.
+        ▶ 여기선 이러한 명령어를 만드는 것이 목표
+        03. 패키지명과 콘솔 명령어를 다르게 만들 수 있음. 
+            (sequelize-cli 패키지 명령어가 sequelize 인것처럼)        
+
+    + 프로젝트 파일 작업 순서 및 메모
+        [1] index.js    (튜토리얼 ?)
+            01. /node-cli/package.json  (생성)
+            02. /node-cli/index.js      (생성)
+                1) #!/usr/bin/env node
+                    - Express-generator로 프로젝트를 생성했을 때 bin/www의 첫 줄과 동일.
+                    - 주석이라 의미 없어 보일 수 있지만, 
+                        리눅스나 맥 같은 유닉스 기반 운영체제에서는 의미가 있음.
+                        /usr/bin/env 에 등록된 node 명령어로 이 파일을 실행하라는 뜻.
+                    - 윈도우에선 단순 주석으로 취급
+            03. /node-cli/package.json  (수정)
+                1) 02. 에서 작업한 index를 CLI 프로그램으로 만듬
+                    - "bin": { "cli": "./index.js" } 추가
+                        ▷ 콘솔 명령어는 cli로, 실행 파일은 index.js로 지정
+                2) bin 속성이 콘솔 명령어와 해당 명령어 호출 시 실행 파일을 설정하는 객체
+            04. 콘솔    
+                > cd /node-cli
+                > npm i -g
+                > cli            
+            05. /node-cli/index.js  (수정)
+                - CLI 프로그램 코드가 바뀌어도 다시 설치할 필요는 없음.
+                    등록한 'cli' 명령어 사용시 package.json에 등록된 파일을 불러오기 때문.
+                    호출 시마다 새로 읽어들이므로 항상 내용이 반영됨.
+            06. /node-cli/index.js  (수정)
+                - 사용자로부터 입력을 받는 기능을 추가
+                1) readine 패키지 사용
+                    - 이 패키지는 CLI 프로그램 만들 때 제외하면 쓸 일 없음.
+            07. /node-cli/index.js  (수정)
+                - 종료대신 기존 콘솔 내용을 지우고 다시 입력받게 함
+        
+        [2] template.js
+            01. /node-cli/template.js   (생성)
+                - html 템플릿, 라우터를 만들어주는 기능
+            02. /node-cli/package.json  (수정)
+                - bin의 cli에 index.js 말고 template.js로 변경
+                - 다시 설치.
+            03. 콘솔
+                > npm i -g      
+                > cli
+                    (사용방법 나옴)
+                > cli js main ./public
+                    (html 아니면 express-router 선택하라 함)
+                > cli html main public/html
+                    (알림) public\html\main.html 생성 완료
+                > cli express-router index ./routes
+                    (알림) routes\index.js 생성 완료   
+                > cli express-router index ./routes
+                    (알림) 이미 해당 파일이 존재합니다.
+            04. 01~03의 단점
+                - 사용자가 명령어와 명령어 옵션 순서를 모두 외우고 있어야함..
+            05. /node-cli/template.js   (수정)
+                - 04에 기재된 단점을 수정하기 위해 단계별로 질문하게 변경
+                - readline 패키지 활용. 
+                - 01~03 처럼 cli html test public 이런 형식으로도 가능하고
+                    cli 명령어 실행시, 무엇을 사용하고, 이름을 어떻게할건지 질문이 뜸.
+               
+
+
+            

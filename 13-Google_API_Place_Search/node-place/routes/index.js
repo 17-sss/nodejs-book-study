@@ -95,7 +95,6 @@ router.get('/search/:query', async(req, res, next) => {
     }    
 });
 
-
 // [13.4 : 06.] START
 router.post('/location/:id/favorite', async (req, res, next) => {
     try {
