@@ -4,16 +4,16 @@
     "description": "nodejs cli program",
     "main": "index.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "ZeroCho",
+    "author": "Ho-young Son",
     "license": "ISC",
     "bin": {
-      "cli": "./command.js"
+        "cli": "./command.js"
     },
     "dependencies": {
-      "chalk": "^2.4.1",
-      "commander": "^2.15.1",
-      "inquirer": "^5.2.0"
+        "chalk": "^2.4.1",
+        "commander": "^2.15.1",
+        "inquirer": "^5.2.0"
     }
 }

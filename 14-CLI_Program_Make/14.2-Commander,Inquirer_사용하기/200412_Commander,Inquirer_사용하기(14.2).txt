@@ -1,0 +1,54 @@
+* Commander, Inquirer 사용하기  
+    + 메모
+        npm에는 CLI 프로그램을 위한 라이브러리가 있음
+        대표적인 것으로는 yargs, commander, meow가 있음
+    
+    + 프로젝트 파일 작업 순서 및 메모
+        01. 콘솔
+            > npm i chalk
+            > npm i commander
+            > npm i inquirer
+        02. /node-cli/command.js    (생성)
+            - 나중에 CLI 만들 때 각종 설명 책 참고하기.
+        03. /node-cli/package.json  (수정)
+        04. 콘솔
+            > cli  -v
+            > cli -h
+            > cli template -h
+            > cli template
+        05. /node-cli/command.js    (수정)
+            1) template.js의 코드 대부분을 가져옴
+        06. 콘솔
+            > cli template html -d public/html -n new
+            > cli copy
+            > cli
+            --------------------------------------------
+            1) commander에서는 기본 명령어(cli)는 * 명령어에 해당하지 않음.
+                - 이 명령에 동작을 추가하기 위해선, parse 메서드 다음에 별도로 동작을 정의해야.
+        07. /node-cli/command.js    (수정)
+            - inquirer로 cli 명령어 사용 시 사용자와 상호작용할 수 있도록 변경
+        08. 콘솔
+            > cli
+            ? 템플릿 종류를 선택하세요. (Use arrow keys)
+            -> html
+               express-router
+            ? 템플릿 종류를 선택하세요. html
+            ? 파일의 이름을 입력하세요. new
+            ? 파일이 위치할 폴더의 경로를 입력하세요. public/html
+            ? 생성하시겠습니까? Yes
+            public\html\new.html 생성 완료
+            --------------------------------------------
+            1) 이렇게 콘솔에 입력했던 답변들은 answers 객체에 저장되어 프로미스를 통해 반환됨
+        09. /node-cli/command.js    (수정)
+            1) chalk 패키지 추가
+                - 특별한 기능은 없음. 터미널에 색과 스타일 추가
+            2) chalk의 사용법
+                - chalk의 객체의 메서드들로 문자열을 감싸면 됨.
+                    green, yellow, red, blue 등 메서드로 추가되어있으며,
+                    직접 색을 지정할 경우 rgb 메서드나 hex 메서드를 사용하면 됨.
+                - 글자색 외에도 배경색을 지정할 수 있음.
+                    bgGreen, bgYellow나 bgRgb, bgHex등을 사용
+                - 텍스트의 스타일도 정할 수 있음
+                    텍스트를 굵게(bold)도 할 수 있고, 밑줄(underline)을 그을 수도 있음
+                - 글자색, 배경색 스타일을 동시에 지정할 수도 있음
+                    chalk.red.bgBlue.bold(텍스트) 처럼 하면 됨.
