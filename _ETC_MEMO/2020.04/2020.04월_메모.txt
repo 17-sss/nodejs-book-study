@@ -20,3 +20,6 @@
         > SET foreign_key_checks = 0;
         > drop table [없앨 테이블명];
         > SET foreign_key_checks = 1;
+
+* 2020.04.12
+    + NODE JS 교과서 - 14장까지 학습함. 15장부턴 나중에 필요하면 보기.
